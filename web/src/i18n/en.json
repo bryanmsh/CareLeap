@@ -61,6 +61,13 @@
       "hampden": "Hampden County (Springfield, Holyoke)",
       "hampshire": "Hampshire County (Northampton, Amherst)",
       "franklin": "Franklin County (Greenfield, rural)"
+    },
+    "summary": {
+      "title": "At a glance",
+      "best": "Best hour",
+      "worst": "Hardest hour",
+      "people": "Car-less adults in this area",
+      "hint": "can get there and back by bus"
     }
   },
   "suggest": {
@@ -74,7 +81,7 @@
     "error": "Could not get suggestions.",
     "needsData": "Schedule suggestions need real data. This demo runs on synthetic data, so suggestions are turned off here.",
     "retry": "Try again",
-    "illustrative": "Illustrative — not yet backed by real data.",
+    "illustrative": "Illustrative ranking: the visit-priority weights are placeholders. People counts are computed from real data.",
     "change": "Move {{block}} to {{hour}}",
     "gainPeople": "+{{count}} more car-less adults reached",
     "gainVisitHours": "+{{hours}} visit-hours of reach",

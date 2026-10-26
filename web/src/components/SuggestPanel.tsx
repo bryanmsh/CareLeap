@@ -218,7 +218,12 @@ export function SuggestPanel({
             return (
               <li key={`${s.change.block}-${s.change.to}-${i}`} className="suggest-item">
                 <p className="suggest-change">
-                  {t("suggest.change", { block: s.change.block, hour: toHour })}
+                  {t("suggest.change", {
+                    block: `${t(`audit.days.${s.change.block.slice(0, 3)}`)} ${hourLabel(
+                      Number(s.change.block.slice(4)),
+                    )}`,
+                    hour: toHour,
+                  })}
                 </p>
                 <ul className="suggest-gains">
                   <li>

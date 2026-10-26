@@ -536,8 +536,8 @@ button[aria-pressed="true"] {
   padding: var(--space-4);
   background: var(--surface);
 }
-.option-slot { border-left-color: var(--scale-2); }
-.option-ride { border-left-color: var(--scale-1); }
+.option-slot { border-left-color: var(--ok); }
+.option-ride { border-left-color: var(--link); }
 .option-tele { border-left-color: var(--scale-3); }
 .option-prep { border-left-color: var(--warn); }
 .option-none { border-left-color: var(--danger); }
@@ -579,7 +579,7 @@ button[aria-pressed="true"] {
   display: contents;
 }
 .option-detail dt {
-  color: var(--muted, #555);
+  color: var(--text-muted);
   font-weight: 600;
 }
 .option-detail dd {
@@ -760,4 +760,205 @@ button[aria-pressed="true"] {
 }
 .prep-sheet h5 {
   margin: var(--space-3) 0 var(--space-1);
+}
+
+/* ------------------------------------------------------------------------
+   Polish layer (portfolio touch-up). Tokens only; overrides earlier rules.
+   ------------------------------------------------------------------------ */
+
+:root {
+  --radius-lg: 0.75rem;
+}
+
+.app-header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  box-shadow: var(--shadow);
+}
+.app-header .brand {
+  letter-spacing: -0.01em;
+}
+.app-main {
+  max-width: 1180px;
+  padding: var(--space-6) var(--space-4);
+}
+h1 {
+  letter-spacing: -0.02em;
+}
+
+/* Inputs: softer, with a visible hover state */
+select,
+input {
+  background: var(--surface);
+  border-radius: var(--radius);
+  transition: border-color 0.15s ease;
+}
+select:hover,
+input:hover {
+  border-color: var(--text-muted);
+}
+button {
+  border-radius: var(--radius);
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+button:hover:not([aria-pressed="true"]):not(.cell-btn) {
+  border-color: var(--text-muted);
+}
+
+/* At-a-glance summary cards above the grid */
+.summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: var(--space-4);
+  margin: var(--space-4) 0 var(--space-5);
+}
+.summary-card {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-1);
+  padding: var(--space-4);
+  border: 1px solid var(--border);
+  border-top: 4px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+.summary-best { border-top-color: var(--scale-4); }
+.summary-worst { border-top-color: var(--scale-0); }
+.summary-label {
+  font-size: var(--fs-1);
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.summary-value {
+  font-size: 2.25rem;
+  font-weight: 700;
+  line-height: 1.1;
+  font-variant-numeric: tabular-nums;
+}
+.summary-hint {
+  font-size: var(--fs-1);
+  color: var(--text-muted);
+}
+.summary-card .chip {
+  align-self: flex-start;
+  margin-top: var(--space-1);
+}
+
+/* Week grid: rounded tiles with gaps instead of a ruled table */
+.weekgrid {
+  border-collapse: separate;
+  border-spacing: 4px;
+}
+.weekgrid th,
+.weekgrid td {
+  border: none;
+}
+.weekgrid thead th,
+.weekgrid tbody th {
+  background: transparent;
+  color: var(--text-muted);
+  font-weight: 600;
+}
+.cell-btn {
+  border-radius: var(--radius);
+  min-height: 2.5rem;
+  font-weight: 600;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.cell-btn:hover {
+  transform: scale(1.03);
+  box-shadow: var(--shadow);
+}
+@media (prefers-reduced-motion: reduce) {
+  .cell-btn,
+  .cell-btn:hover {
+    transition: none;
+    transform: none;
+  }
+}
+.legend .box {
+  border-radius: 3px;
+}
+
+/* Before/after banner */
+.beforeafter {
+  padding: var(--space-3) var(--space-4);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  background: var(--surface);
+  flex-wrap: wrap;
+}
+.beforeafter .delta {
+  font-weight: 700;
+}
+
+/* Panels and cards */
+.panel,
+.option,
+.suggest-item {
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow);
+}
+.panels {
+  gap: var(--space-5);
+}
+
+/* Illustrative note: a quiet footnote, not an alarm */
+.notice.illustrative {
+  border: none;
+  border-left: 3px solid var(--warn);
+  border-radius: 0;
+  background: transparent;
+  color: var(--text-muted);
+  font-size: var(--fs-1);
+  padding: var(--space-1) var(--space-2);
+}
+
+/* Planner: ride steps and bus legs as a vertical timeline */
+.ride-timeline,
+.legs {
+  list-style: none;
+  padding-left: 0;
+  margin: var(--space-3) 0;
+  position: relative;
+}
+.ride-timeline li,
+.legs li {
+  position: relative;
+  padding: 0 0 var(--space-3) var(--space-5);
+  margin: 0;
+}
+.ride-timeline li::before,
+.legs li::before {
+  content: "";
+  position: absolute;
+  left: 0.3rem;
+  top: 0.45rem;
+  width: 0.6rem;
+  height: 0.6rem;
+  border-radius: 50%;
+  background: var(--link);
+}
+.ride-timeline li::after,
+.legs li::after {
+  content: "";
+  position: absolute;
+  left: calc(0.6rem - 1px);
+  top: 1.1rem;
+  bottom: 0;
+  width: 2px;
+  background: var(--border);
+}
+.ride-timeline li:last-child::after,
+.legs li:last-child::after {
+  display: none;
+}
+.option-detail {
+  padding: var(--space-3);
+  border-radius: var(--radius);
+  background: var(--bg);
 }

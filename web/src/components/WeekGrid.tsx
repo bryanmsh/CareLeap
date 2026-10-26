@@ -31,6 +31,10 @@ export function WeekGrid({
 }) {
   const { t } = useTranslation();
   const byKey = new Map(cells.map((c) => [blockKey(c.day, c.hour), c]));
+  // Only show the days the clinic actually runs; a week of empty columns reads as
+  // broken. Fall back to the full week when no cell has data.
+  const withData = DAYS.filter((d) => cells.some((c) => c.day === d));
+  const days = withData.length > 0 ? withData : DAYS;
   const [picked, setPicked] = useState<{ day: Day; hour: number } | null>(null);
   const dragFrom = useRef<{ day: Day; hour: number } | null>(null);
 
@@ -59,16 +63,16 @@ export function WeekGrid({
     day: Day,
     hour: number,
   ) => {
-    const dIdx = DAYS.indexOf(day);
+    const dIdx = days.indexOf(day);
     const hIdx = HOURS.indexOf(hour);
     switch (e.key) {
       case "ArrowRight":
         e.preventDefault();
-        if (dIdx < DAYS.length - 1) focusCell(DAYS[dIdx + 1], hour);
+        if (dIdx < days.length - 1) focusCell(days[dIdx + 1], hour);
         break;
       case "ArrowLeft":
         e.preventDefault();
-        if (dIdx > 0) focusCell(DAYS[dIdx - 1], hour);
+        if (dIdx > 0) focusCell(days[dIdx - 1], hour);
         break;
       case "ArrowDown":
         e.preventDefault();
@@ -108,7 +112,7 @@ export function WeekGrid({
       <thead>
         <tr>
           <th scope="col">{t("audit.hour")}</th>
-          {DAYS.map((d) => (
+          {days.map((d) => (
             <th scope="col" key={d}>
               <abbr title={t(`audit.days.${d}`)}>{t(`audit.dayShort.${d}`)}</abbr>
             </th>
@@ -119,7 +123,7 @@ export function WeekGrid({
         {HOURS.map((hour) => (
           <tr key={hour}>
             <th scope="row">{hourLabel(hour)}</th>
-            {DAYS.map((day) => {
+            {days.map((day) => {
               const key = blockKey(day, hour);
               const c = byKey.get(key);
               const vars = cellVars(c ? c.share : null);
