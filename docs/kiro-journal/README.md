@@ -1,6 +1,6 @@
 # docs/kiro-journal/ — per-person Kiro-usage log
 
-The team's running record of **how Kiro was used** on Slot-to-Stop. It is the raw
+The team's running record of **how Kiro was used** on CareLeap (formerly Slot-to-Stop). It is the raw
 material for the required "How Kiro was used" write-up (judges read this).
 
 ## One file per person — no merge conflicts
