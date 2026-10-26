@@ -40,3 +40,7 @@ outcome: CI shares equal equity shares exactly; e.g. BAY_GI zero_veh 50.8% [47.9
 what: B4: spec audit-report-pdf + GET /report (WeasyPrint PDF or HTML), one page per clinic from engine.audit, CIs, sources, method
 kiro: Crew wrote router + 6 tests; ran the content-reviewer agent headless (after narrowing its resources, which overflowed on the 12 MB schedules + FRTA feed): 0 guardrail violations, 5 wording fixes applied
 outcome: 516 passed, 1 skipped (real PDF render needs GTK on Windows; runs in CI)
+
+## 2026-10-26 01:44 · m3-bryan · Crew · topic: other
+what: One-service Railway deploy: Docker builds web/, FastAPI serves it on the same URL
+outcome: local check: / , /health, /clinics, assets all 200; API tests pass; PR #5 merged at 1d63a4c

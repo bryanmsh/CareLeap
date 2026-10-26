@@ -7,6 +7,8 @@
 **Built for Hackachusetts 2026** · Healthcare & Biotech · Challenge 3: *Improving healthcare
 access and coordination*
 
+**▶ Live demo: [careleap-production.up.railway.app](https://careleap-production.up.railway.app)** (real PVTA data snapshot, synthetic patients only)
+
 `Python 3.12` · `RAPTOR in NumPy` · `OR-Tools CP-SAT` · `FastAPI` · `React + MapLibre + D3` · `Hypothesis` · `Kiro`
 
 ---
@@ -163,8 +165,10 @@ make demo               # serve the API on that frozen snapshot
 Without `make data` the API runs in **mock** mode (labelled mocks in `api/mocks/`). Then
 `/suggest` and `/rural` answer "needs real data" instead of inventing numbers.
 
-**Deploy.** The `Dockerfile` + `railway.json` run the API on Railway (`python -m api`, health
-check `/health`) against the committed snapshot in `deploy/snapshot/`.
+**Deploy.** Live at [careleap-production.up.railway.app](https://careleap-production.up.railway.app).
+One Railway service: the `Dockerfile` builds the React app, and FastAPI serves it and the API
+from the same URL (`python -m api`, health check `/health`), against the committed snapshot in
+`deploy/snapshot/`. Every push to `main` redeploys.
 
 ### API
 
