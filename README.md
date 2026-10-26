@@ -42,8 +42,9 @@ Two modes run on one round-trip routing engine.
 
 1. **Baystate GI × Holyoke.** Open the audit, and the early-morning cells turn red. Hover
    one to see why in the day ribbon: outbound legs → visit → return legs → last bus home.
-2. **Drag the block** from 8am to 10am. The reachable share jumps, and the counter shows how
-   many more people can make it. Every number is computed, never typed in.
+2. **Drag the block** from 8am to 10am. The grid recomputes and shows the change in
+   percentage points. Or click **Suggest best schedule** for the optimizer's top moves. Every
+   number is computed, never typed in.
 3. **Maria** (a synthetic patient): Spanish-speaking, no car, works 7–3, positive FIT. The
    planner flags *"Needs an escort: transit won't work"*, picks a slot after her shift inside
    a volunteer-driver window, pre-fills the PT-1 ride, and attaches a Spanish prep sheet.
@@ -88,17 +89,27 @@ be audited and extended.
 
 ### What the real data shows
 
-From the current cached cube (vintage 2026-10-24; sources in [`docs/sources.md`](docs/sources.md)):
+The audit covers **506 block groups** in Hampden, Hampshire and Franklin counties, and **4
+clinics** chosen to span urban and rural care. Numbers below are from the cached cube (vintage
+2026-10-24, PVTA feed of 2026-09, FRTA feed of 2026-08; method in
+[`docs/methods.md`](docs/methods.md)):
 
-| Clinic | Share of car-less adults who can make the round trip |
-|---|---|
-| Baystate Medical Center | 31.0% |
-| Holyoke Medical Center | 33.4% |
-| Mercy Medical Center | 41.5% |
-| CHCFC Greenfield (rural, FRTA) | **11.3%** |
+| Clinic | Feed | Visit modeled | Share of car-less adults who can make the round trip |
+|---|---|---|---|
+| Baystate GI / Endoscopy, Springfield | PVTA | colonoscopy, 180 min | 31.0% |
+| Holyoke Medical Center | PVTA | prenatal, 60 min | 33.4% |
+| Mercy Medical Center, Springfield | PVTA | primary care, 30 min | 41.5% |
+| CHCFC Greenfield (rural) | FRTA | colonoscopy, 180 min | **11.3%** |
 
-The rural lens finds **86 block groups (3,270 car-less adults)** that can reach care only by an
-assisted ride (dial-a-ride, Council on Aging driver, or PT-1), not by bus.
+- **Time of day matters.** The real-cube contract test pins an hourly share of 19% at 7am,
+  45% at noon and 14% at 6pm.
+- **Franklin County is almost unserved by fixed routes.** Only 5 of its 62 block groups have a
+  bus stop within 800 m.
+- **86 block groups (3,270 car-less adults)** can reach care only by an assisted ride
+  (dial-a-ride, Council on Aging driver, or PT-1), not by bus.
+
+Car-less adults are an estimate: adults × the block group's zero-vehicle household share (ACS
+B25044). Walk time is straight-line × 1.3 at 80 m/min. Both are labelled as estimates in the app.
 
 ## Why you can trust the numbers
 
@@ -151,6 +162,25 @@ make demo               # serve the API on that frozen snapshot
 
 Without `make data` the API runs in **mock** mode (labelled mocks in `api/mocks/`). Then
 `/suggest` and `/rural` answer "needs real data" instead of inventing numbers.
+
+**Deploy.** The `Dockerfile` + `railway.json` run the API on Railway (`python -m api`, health
+check `/health`) against the committed snapshot in `deploy/snapshot/`.
+
+### API
+
+| Endpoint | What it returns |
+|---|---|
+| `GET /clinics` | clinics the audit covers |
+| `GET /audit` | week grid of reachable share for clinic × community × day, plus equity breakdown |
+| `GET /audit/blockgroups` | per-block-group results for the map |
+| `POST /whatif` | the same grid after moving a clinic block |
+| `GET /suggest` | the optimizer's top-k schedule changes with their gain |
+| `GET /rural` | rural verdict per block group: transit, assisted only, or none |
+| `POST /plan` | a ranked Visit Planner plan from visit type + barrier answers |
+| `GET /provenance` | source, vintage, requirement and tests behind an on-screen number |
+| `GET /report` | CHNA-ready audit report, one page per clinic |
+
+Shapes are fixed in [`docs/contracts.md`](docs/contracts.md) and pinned by contract tests.
 
 ## Repo layout
 
