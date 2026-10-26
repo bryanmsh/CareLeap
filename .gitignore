@@ -60,3 +60,6 @@ data/cache copy/
 # frozen demo snapshots (rebuild with `make snapshot`)
 data/snapshots/
 !deploy/snapshot/*.parquet
+
+# unzipped copy of deploy/snapshot/pvta_gtfs.zip (the Docker build unzips its own)
+deploy/snapshot/pvta/

@@ -5,8 +5,10 @@
 .hypothesis
 *.egg-info
 .env
-web
-data/raw
+web/node_modules
+web/dist
+web/test-results
+web/playwright-report
 data/cache
 data/snapshots
 plans
@@ -16,3 +18,4 @@ ops
 mcp
 tests
 .kiro
+deploy/snapshot/pvta
