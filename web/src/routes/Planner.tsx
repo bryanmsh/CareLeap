@@ -61,6 +61,7 @@ export function Planner() {
   return (
     <ProvenanceContext.Provider value={openProvenance}>
       <div className={largeType ? "planner large-type" : "planner"}>
+        <p className="eyebrow">{t("design.plannerEyebrow")}</p>
         <div className="planner-head">
           <h1>{t("planner.title")}</h1>
           <label className="large-type-toggle">
@@ -77,6 +78,15 @@ export function Planner() {
           {t("planner.logisticsNote")} {t("planner.synthetic")}
         </p>
 
+        <ol className="planner-progress" aria-label={t("planner.title")}>
+          {[0, 1, 2].map((step) => {
+            const active = phase.k === "pick" ? 0 : phase.k === "plan" ? 2 : 1;
+            return <li key={step} aria-current={active === step ? "step" : undefined} data-complete={active > step}>
+              <span className="step-dot" aria-hidden="true">{active > step ? "\u2713" : step + 1}</span>
+              {t(`design.plannerSteps.${step}`)}
+            </li>;
+          })}
+        </ol>
         {phase.k === "pick" && (
           <section aria-labelledby="pick-title">
             <fieldset>

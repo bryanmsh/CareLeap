@@ -295,5 +295,28 @@
     "title": "Acerca de CareLeap",
     "body": "CareLeap muestra cómo las horas de cita de la clínica coinciden con el servicio de autobús, para que las clínicas elijan horas a las que más pacientes sin carro puedan llegar. Solo logística. Su equipo de atención decide su atención.",
     "guardrail": "Cada número lleva su fuente y año. Los pacientes mostrados son sintéticos."
+  },
+  "design": {
+    "workspace": "Espacio de acceso a la atención",
+    "tagline": "Hagamos posible el viaje.",
+    "region": "Oeste de Massachusetts",
+    "theme": "Apariencia",
+    "light": "Claro",
+    "dark": "Oscuro",
+    "system": "Sistema",
+    "auditEyebrow": "Entender el acceso",
+    "plannerEyebrow": "Planificar una visita accesible",
+    "aboutEyebrow": "Detrás de los datos",
+    "scheduleTitle": "Encuentre horarios que funcionen",
+    "scheduleHint": "Explore la tabla y mueva un bloque para probar otro horario.",
+    "gridHelp": "Cómo explorar esta tabla",
+    "detailsTitle": "Convierta los datos en un plan",
+    "detailsHint": "Explore el día, pruebe cambios de horario y vea quién puede llegar.",
+    "plannerSteps": [
+      "Elegir una visita",
+      "Revisar barreras",
+      "Revisar el plan"
+    ],
+    "scrollHint": "Deslice hacia los lados para ver todos los días."
   }
 }

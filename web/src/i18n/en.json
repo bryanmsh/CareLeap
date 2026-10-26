@@ -295,5 +295,28 @@
     "title": "About CareLeap",
     "body": "CareLeap shows how clinic appointment hours line up with bus service, so clinics can pick hours that more car-less patients can actually reach. Logistics only. Your care team decides your care.",
     "guardrail": "Every number carries a source and vintage. Patients shown are synthetic."
+  },
+  "design": {
+    "workspace": "Care access workspace",
+    "tagline": "Make the journey possible.",
+    "region": "Western Massachusetts",
+    "theme": "Appearance",
+    "light": "Light",
+    "dark": "Dark",
+    "system": "System",
+    "auditEyebrow": "Understand access",
+    "plannerEyebrow": "Build a reachable visit",
+    "aboutEyebrow": "Behind the numbers",
+    "scheduleTitle": "Find the hours that work",
+    "scheduleHint": "Explore the grid, then move a block to test a better time.",
+    "gridHelp": "How to explore this grid",
+    "detailsTitle": "Turn insight into a plan",
+    "detailsHint": "Explore the day, test schedule changes, and see who can reach care.",
+    "plannerSteps": [
+      "Choose a visit",
+      "Check barriers",
+      "Review the plan"
+    ],
+    "scrollHint": "Scroll sideways to see all days."
   }
 }

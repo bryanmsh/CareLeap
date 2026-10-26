@@ -1,0 +1,30 @@
+import { expect, test } from "@playwright/test";
+import AxeBuilder from "@axe-core/playwright";
+import { mockApi } from "./fixtures";
+
+test("workspace stays within mobile viewport and remembers appearance", async ({ page }) => {
+  await mockApi(page);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.goto("/#/audit");
+  await expect(page.locator("table.weekgrid")).toBeVisible();
+  await page.getByLabel("Appearance").selectOption("light");
+  await page.screenshot({ path: "test-results/audit-desktop.png", fullPage: true });
+  await page.getByLabel("Appearance").selectOption("dark");
+  await page.reload();
+  await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
+  await expect(page.locator("table.weekgrid")).toBeVisible();
+  const result = await new AxeBuilder({ page }).withTags(["wcag2a", "wcag2aa", "wcag21aa", "wcag22aa"]).analyze();
+  expect(result.violations.filter(v => v.impact === "serious" || v.impact === "critical")).toEqual([]);
+  await page.screenshot({ path: "test-results/audit-dark.png", fullPage: true });
+  await page.getByLabel("Appearance").selectOption("light");
+  await page.setViewportSize({ width: 320, height: 850 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.screenshot({ path: "test-results/audit-mobile.png", fullPage: true });
+  await page.getByRole("link", { name: /Visit Planner/ }).click();
+  await expect(page.locator(".planner-progress [aria-current=step]")).toContainText("Choose a visit");
+  await page.getByTestId("start-barriers").click();
+  await expect(page.locator(".planner-progress [aria-current=step]")).toContainText("Check barriers");
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await page.setViewportSize({ width: 1440, height: 1000 });
+  await page.screenshot({ path: "test-results/planner-desktop.png", fullPage: true });
+});

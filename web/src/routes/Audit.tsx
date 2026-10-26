@@ -128,8 +128,11 @@ export function Audit() {
 
   return (
     <>
-      <h1>{t("audit.title")}</h1>
-      <p>{t("audit.intro")}</p>
+      <div className="page-heading">
+        <p className="eyebrow">{t("design.auditEyebrow")}</p>
+        <h1>{t("audit.title")}</h1>
+        <p className="page-intro">{t("audit.intro")}</p>
+      </div>
 
       <div className="controls">
         <div className="field">
@@ -178,9 +181,7 @@ export function Audit() {
         </div>
       </div>
 
-      <p id="grid-help" className="text-muted">
-        {t("audit.pickUpHint")}
-      </p>
+
 
       {/* aria-live region for what-if updates (accessibility.md) */}
       <p
@@ -217,6 +218,14 @@ export function Audit() {
         <>
           <AuditSummary data={data} />
 
+          <section className="schedule-surface" aria-labelledby="schedule-title">
+          <div className="section-heading">
+            <div><h2 id="schedule-title">{t("design.scheduleTitle")}</h2>
+            <p className="text-muted">{t("design.scheduleHint")}</p></div>
+            <details className="grid-help"><summary>{t("design.gridHelp")}</summary>
+              <p id="grid-help">{t("audit.pickUpHint")}</p>
+            </details>
+          </div>
           <ScaleLegend />
 
           {lastMove && (
@@ -240,6 +249,8 @@ export function Audit() {
             </div>
           )}
 
+          <p className="grid-scroll-hint">{t("design.scrollHint")}</p>
+          <div className="grid-scroll" role="region" aria-label={t("audit.gridCaption")} tabIndex={0}>
           <WeekGrid
             cells={data.cells}
             busy={busy}
@@ -248,6 +259,12 @@ export function Audit() {
             onMove={onMove}
           />
 
+          </div>
+          </section>
+          <div className="section-heading details-heading"><div>
+            <h2>{t("design.detailsTitle")}</h2>
+            <p className="text-muted">{t("design.detailsHint")}</p>
+          </div></div>
           <div className="panels">
             <DayRibbon day={focusDay} cells={data.cells} />
             <SuggestPanel clinic={clinic} day={day} community={community} cells={data.cells} />
