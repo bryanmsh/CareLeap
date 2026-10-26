@@ -61,6 +61,13 @@
       "hampden": "Condado de Hampden (Springfield, Holyoke)",
       "hampshire": "Condado de Hampshire (Northampton, Amherst)",
       "franklin": "Condado de Franklin (Greenfield, rural)"
+    },
+    "summary": {
+      "title": "Resumen",
+      "best": "Mejor hora",
+      "worst": "Hora m?s dif?cil",
+      "people": "Adultos sin auto en esta zona",
+      "hint": "pueden ir y volver en autob?s"
     }
   },
   "suggest": {
@@ -74,7 +81,7 @@
     "error": "No se pudieron obtener sugerencias.",
     "needsData": "Las sugerencias de horario necesitan datos reales. Esta demostración usa datos sintéticos, por lo que las sugerencias están desactivadas aquí.",
     "retry": "Intentar de nuevo",
-    "illustrative": "Ilustrativo — aún no respaldado por datos reales.",
+    "illustrative": "Clasificaci?n ilustrativa: los pesos de prioridad son provisionales. Las cifras de personas se calculan con datos reales.",
     "change": "Mover {{block}} a {{hour}}",
     "gainPeople": "+{{count}} adultos sin carro más alcanzados",
     "gainVisitHours": "+{{hours}} horas de visita de acceso",

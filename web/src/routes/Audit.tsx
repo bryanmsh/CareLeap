@@ -15,6 +15,7 @@ import { EquityPanel } from "../components/EquityPanel";
 import { BlockGroupMap } from "../components/BlockGroupMap";
 import { SourcesFooter } from "../components/SourcesFooter";
 import { ScaleLegend } from "../components/ScaleLegend";
+import { ProvenanceChip } from "../components/ProvenanceChip";
 
 type Load =
   | { kind: "loading" }
@@ -214,6 +215,8 @@ export function Audit() {
 
       {data && data.cells.length > 0 && (
         <>
+          <AuditSummary data={data} />
+
           <ScaleLegend />
 
           {lastMove && (
@@ -256,5 +259,47 @@ export function Audit() {
         </>
       )}
     </>
+  );
+}
+
+/**
+ * Three headline numbers above the grid: the best hour, the hardest hour and how
+ * many car-less adults the share is out of. All three are read straight from the
+ * /audit cells (never computed from anything else), and each carries the audit's
+ * first source as its ProvenanceChip (ui-style.md provenance rule).
+ */
+function AuditSummary({ data }: { data: AuditResponse }) {
+  const { t } = useTranslation();
+  const cells = data.cells;
+  const best = cells.reduce((a, c) => (c.share > a.share ? c : a), cells[0]);
+  const worst = cells.reduce((a, c) => (c.share < a.share ? c : a), cells[0]);
+  const people = Math.max(...cells.map((c) => c.n));
+  const src = data.sources[0];
+  const when = (c: AuditResponse["cells"][number]) =>
+    `${t(`audit.days.${c.day}`)} ${hourLabel(c.hour)}`;
+  return (
+    <section className="summary" aria-label={t("audit.summary.title")}>
+      <div className="summary-card summary-best">
+        <span className="summary-label">{t("audit.summary.best")}</span>
+        <span className="summary-value">{pct(best.share)}</span>
+        <span className="summary-hint">
+          {when(best)} · {t("audit.summary.hint")}
+        </span>
+        {src && <ProvenanceChip source={src} />}
+      </div>
+      <div className="summary-card summary-worst">
+        <span className="summary-label">{t("audit.summary.worst")}</span>
+        <span className="summary-value">{pct(worst.share)}</span>
+        <span className="summary-hint">
+          {when(worst)} · {t("audit.summary.hint")}
+        </span>
+        {src && <ProvenanceChip source={src} />}
+      </div>
+      <div className="summary-card">
+        <span className="summary-label">{t("audit.summary.people")}</span>
+        <span className="summary-value">{people.toLocaleString()}</span>
+        {src && <ProvenanceChip source={src} />}
+      </div>
+    </section>
   );
 }
