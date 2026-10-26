@@ -9,6 +9,7 @@ import os
 
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from api import __version__
 from api.deps import data_mode
@@ -52,6 +53,12 @@ def create_app() -> FastAPI:
     app.include_router(plan.router)  # M4
     app.include_router(provenance.router)  # M4
     app.include_router(report.router)  # M3 (CHNA PDF report)
+
+    # One-service deploy: serve the built React app from the same origin. Mounted LAST so
+    # every API route above wins; the app uses #/ routes, so index.html is all it needs.
+    web_dist = os.environ.get("CARELEAP_WEB_DIST")
+    if web_dist and os.path.isdir(web_dist):
+        app.mount("/", StaticFiles(directory=web_dist, html=True), name="web")
 
     return app
 
