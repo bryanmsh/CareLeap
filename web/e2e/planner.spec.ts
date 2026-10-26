@@ -159,7 +159,8 @@ test("PT-1 summary lists fields and marks blanks (UP-5)", async ({ page }) => {
 
   const summary = page.locator(".pt1-summary");
   await expect(summary).toBeVisible();
-  await expect(summary).toContainText("member_id");
+  // Known fields show their readable label (planner.pt1.fields.*), not the raw key.
+  await expect(summary).toContainText("MassHealth member ID");
   // escort_name is null -> shown as "for a person to complete".
   await expect(summary.locator(".pt1-todo")).toHaveCount(1);
   await expect(summary.locator(".pt1-todo").first()).toBeVisible();

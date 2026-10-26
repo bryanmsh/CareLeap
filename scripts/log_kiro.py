@@ -44,7 +44,7 @@ def _ensure_file(member: str) -> Path:
         JOURNAL_DIR.mkdir(parents=True, exist_ok=True)
         path.write_text(
             f"# Kiro Journal — {member}\n\n"
-            "Per-person Kiro-usage log for Slot-to-Stop. Append only, newest at the bottom.\n"
+            "Per-person Kiro-usage log for CareLeap. Append only, newest at the bottom.\n"
             f"Write entries with: `python scripts/log_kiro.py --member {_slug(member)} "
             "--tool <IDE|CLI|Web|Crew> --topic <t> --what \"...\" [--kiro \"...\"] [--outcome \"...\"]`\n"
             "Assemble the whole team's log with: `python scripts/log_kiro.py --assemble`\n\n"

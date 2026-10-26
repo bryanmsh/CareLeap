@@ -21,6 +21,6 @@ python -m pytest tests/unit tests/property            # or: make test-planner
 
 - Docs: http://127.0.0.1:8000/docs
 - Demo request (synthetic Maria): `api/mocks/plan_request_maria.json`
-- Data mode: `SLOT_TO_STOP_DATA=mock` (default) serves the labelled mocks in `api/mocks/`.
+- Data mode: `CARELEAP_DATA=mock` (default) serves the labelled mocks in `api/mocks/`.
   `real` uses real data only and returns 503 for anything not landed yet.
 - No authentication or CORS yet: run on localhost only.

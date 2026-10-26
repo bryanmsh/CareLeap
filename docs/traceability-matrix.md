@@ -66,8 +66,8 @@ Requirements found: **115** across **6** specs. Covered: **15**. Gaps (no test):
 | `RC-14` — — When a requested clinic/day/community has no cube rows, the system SHALL | `reachability-cube` | — | **GAP** |
 | `RC-15` — — The system SHALL return a non-empty `sources` list, each entry carrying a | `reachability-cube` | — | **GAP** |
 | `RC-16` — — For a what-if move, the system SHALL remove the block's original hour and | `reachability-cube` | — | **GAP** |
-| `RC-17` — — While `SLOT_TO_STOP_DATA=mock`, the system SHALL serve the labelled mock | `reachability-cube` | — | **GAP** |
-| `RC-18` — — While `SLOT_TO_STOP_DATA=real`, the system SHALL aggregate the real cube | `reachability-cube` | — | **GAP** |
+| `RC-17` — — While `CARELEAP_DATA=mock`, the system SHALL serve the labelled mock | `reachability-cube` | — | **GAP** |
+| `RC-18` — — While `CARELEAP_DATA=real`, the system SHALL aggregate the real cube | `reachability-cube` | — | **GAP** |
 | `RC-19` — — While in real mode, when `cube.parquet` or `origins.parquet` is missing, | `reachability-cube` | — | **GAP** |
 | `RC-2` — — The system SHALL derive `reachable` ONLY from `engine.round_trip`; it SHALL | `reachability-cube` | — | **GAP** |
 | `RC-20` — — When `GET /audit` receives an unknown clinic, day or community in real | `reachability-cube` | — | **GAP** |
@@ -108,7 +108,7 @@ Requirements found: **115** across **6** specs. Covered: **15**. Gaps (no test):
 | `VP-15` — WHEN a `ride` is offered and a PT-1 field list is available, | `visit-planner` | — | **GAP** |
 | `VP-16` — THE planner SHALL NOT emit clinical advice or eligibility | `visit-planner` | `tests/contract/test_api_contracts.py::test_health`<br>`tests/contract/test_api_contracts.py::test_audit_matches_contract`<br>`tests/contract/test_api_contracts.py::test_audit_requires_all_params` | covered |
 | `VP-17` — THE planner SHALL be exercised only with synthetic patients. | `visit-planner` | — | **GAP** |
-| `VP-18` — WHEN real data is selected (`SLOT_TO_STOP_DATA=real`) and a | `visit-planner` | — | **GAP** |
+| `VP-18` — WHEN real data is selected (`CARELEAP_DATA=real`) and a | `visit-planner` | — | **GAP** |
 | `VP-19` — THE solver SHALL NOT import FastAPI, Pydantic or `api/`, and SHALL | `visit-planner` | — | **GAP** |
 | `VP-2` — THE planner SHALL read visit logistics (`duration`, | `visit-planner` | — | **GAP** |
 | `VP-20` — Needs a childcare *window*; contracts.md has only | `visit-planner` | — | **GAP** |

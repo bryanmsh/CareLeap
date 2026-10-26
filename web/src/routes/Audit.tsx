@@ -21,10 +21,10 @@ type Load =
   | { kind: "error"; message: string }
   | { kind: "ready"; data: AuditResponse };
 
-// Communities the audit can scope to. "all" is the whole service area; the
-// others map to engine.audit.filter_community. Kept here (not an API call) so
-// the picker works before any audit loads.
-const COMMUNITIES = ["all", "ej", "lep", "age65", "zero_veh"] as const;
+// Communities the audit can scope to: the whole service area or one county.
+// These are exactly what engine.audit.filter_community accepts. (Equity groups
+// such as EJ or limited-English are not filters; the Equity panel shows them.)
+const COMMUNITIES = ["all", "hampden", "hampshire", "franklin"] as const;
 
 export function Audit() {
   const { t } = useTranslation();
@@ -92,7 +92,7 @@ export function Audit() {
       setBusy(true);
       setAnnounce(t("audit.whatif.moving"));
       const ac = new AbortController();
-      postWhatIf({ clinic, shift: { block, to: toHour } }, ac.signal)
+      postWhatIf({ clinic, community, shift: { block, to: toHour } }, ac.signal)
         .then((next) => {
           setLoad({ kind: "ready", data: next });
           const movedTo = blockKey(block.slice(0, 3) as Day, toHour);
@@ -155,7 +155,7 @@ export function Audit() {
           >
             {COMMUNITIES.map((c) => (
               <option key={c} value={c}>
-                {c === "all" ? t("legend.title") : t(`equity.groups.${c}`)}
+                {t(`audit.communities.${c}`)}
               </option>
             ))}
           </select>
@@ -247,7 +247,7 @@ export function Audit() {
 
           <div className="panels">
             <DayRibbon day={focusDay} cells={data.cells} />
-            <SuggestPanel clinic={clinic} day={day} cells={data.cells} />
+            <SuggestPanel clinic={clinic} day={day} community={community} cells={data.cells} />
             <EquityPanel equity={data.equity} />
             <BlockGroupMap />
           </div>

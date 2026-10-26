@@ -1,4 +1,4 @@
-# Slot-to-Stop: Reachable Care — submission text
+# CareLeap: Reachable Care — submission text
 
 > **Track:** Healthcare & Biotech · **Challenge 3:** "Improving healthcare access and
 > coordination" ("A referral is not a finished visit").
@@ -11,7 +11,7 @@ patients physically can't get to by bus** — then plan the high-stakes visits s
 actually happen.
 
 ## Short description (≈60 words)
-Slot-to-Stop: Reachable Care audits a clinic's whole weekly schedule for **round-trip**
+CareLeap: Reachable Care audits a clinic's whole weekly schedule for **round-trip**
 transit reachability, neighborhood by neighborhood, and shows which schedule change fixes
 the gap. Then, for high-stakes visits — colonoscopy after a positive FIT, prenatal,
 dialysis, chemo — it runs a 30-second barrier check and builds a plan that can actually

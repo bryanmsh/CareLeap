@@ -1,4 +1,4 @@
-"""Download the raw data for Slot-to-Stop (plan.md section 2a).
+"""Download the raw data for CareLeap (plan.md section 2a).
 
 Run from the repo root:   python scripts/get_data.py
 Re-running is safe: files that already exist are skipped (use --force to re-download).
@@ -71,7 +71,7 @@ def sha256(path: Path) -> str:
     return h.hexdigest()
 
 def fetch(url: str) -> bytes:
-    req = urllib.request.Request(url, headers={"User-Agent": "slot-to-stop/get_data"})
+    req = urllib.request.Request(url, headers={"User-Agent": "careleap/get_data"})
     with urllib.request.urlopen(req, timeout=120) as r:
         return r.read()
 

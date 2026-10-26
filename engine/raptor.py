@@ -312,6 +312,56 @@ def one_way(
     return chosen
 
 
+def _latest_outbound(
+    tt: Timetable,
+    origin_links: list[tuple[str, int]],
+    clinic_links: list[tuple[str, int]],
+    date: str,
+    must_arrive_by: int,
+    limits: Limits,
+) -> tuple[int, list[Leg]] | None:
+    """The latest-departing origin -> clinic journey that still arrives by the deadline.
+
+    Backward RAPTOR from every clinic stop (deadline minus its egress walk), then pick
+    the origin stop whose latest departure, minus the access walk, is latest. Legs are
+    returned forward, with the access and egress walks attached, in the same shape as
+    `one_way`. Returns None when the reverse search finds nothing (the caller keeps the
+    forward journey, so reachability never depends on this helper).
+    """
+    egress = {stop: walk for stop, walk in clinic_links}
+    targets: dict[str, int] = {}
+    for stop, walk in clinic_links:
+        deadline = must_arrive_by - walk
+        if stop not in targets or deadline > targets[stop]:
+            targets[stop] = deadline
+    labels = latest_departure(tt, targets, date, limits=limits)
+    best: tuple[int, str, int, BLabel] | None = None
+    for stop, walk in origin_links:
+        lab = labels.get(stop)
+        if lab is None:
+            continue
+        leave_home = lab[0] - walk
+        if best is None or leave_home > best[0]:
+            best = (leave_home, stop, walk, lab)
+    if best is None:
+        return None
+    leave_home, stop, walk, (dep_at_stop, legs) = best
+    legs = list(legs)
+    out: list[Leg] = []
+    if walk > 0:
+        out.append(Leg(kind="walk", from_stop="origin", to_stop=stop, route_id=None, dep=leave_home, arr=dep_at_stop))
+    out.extend(legs)
+    last_stop = legs[-1].to_stop if legs else stop
+    at_stop = legs[-1].arr if legs else dep_at_stop
+    egress_walk = egress.get(last_stop, 0)
+    if egress_walk > 0:
+        out.append(Leg(kind="walk", from_stop=last_stop, to_stop="clinic", route_id=None, dep=at_stop, arr=at_stop + egress_walk))
+    arrival = at_stop + egress_walk
+    if arrival > must_arrive_by:  # defensive: never return a journey that misses the deadline
+        return None
+    return (arrival, out)
+
+
 def round_trip(
     tt: Timetable,
     origin: OriginRef,
@@ -335,10 +385,19 @@ def round_trip(
     must_arrive_by = start - limits.checkin_buffer
     visit_end = start + minutes * 60
 
-    # Outbound: origin -> clinic, arriving by must_arrive_by.
+    # Outbound: origin -> clinic, arriving by must_arrive_by. Feasibility comes from the
+    # forward search (earliest arrival <= deadline); the itinerary we RETURN is the
+    # latest-departing journey that still makes the deadline (reverse profile), so a
+    # 15:30 appointment is not shown with the 06:00 first bus and the planner's
+    # door-to-door window (work-shift / childcare check) is the one a patient would use.
     out = one_way(tt, origin_links, clinic_links, date, arrive_by=must_arrive_by,
                   limits=limits, origin_label="origin", dest_label="clinic")
     out_legs = out[1] if out else []
+    if out:
+        latest = _latest_outbound(tt, origin_links, clinic_links, date, must_arrive_by, limits)
+        if latest is not None:
+            out = latest
+            out_legs = latest[1]
 
     # Return: clinic -> home, departing >= visit_end.
     ret = one_way(tt, clinic_links, origin_links, date, depart_after=visit_end,

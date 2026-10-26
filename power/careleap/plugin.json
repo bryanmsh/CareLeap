@@ -1,0 +1,13 @@
+{
+  "name": "careleap",
+  "version": "0.1.0",
+  "description": "Reachable Care — audit which clinic hours car-less patients can actually reach by transit (round trip), and debug GTFS routing. Wraps the CareLeap routing engine via gtfs-mcp and reach-mcp.",
+  "author": "CareLeap team",
+  "entry": "mcp.json",
+  "mcp": "mcp.json",
+  "skills": [
+    "skills/clinic-access-audit.md",
+    "skills/gtfs-debugging.md"
+  ],
+  "tags": ["healthcare", "transit", "gtfs", "accessibility", "equity"]
+}

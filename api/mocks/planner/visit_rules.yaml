@@ -2,7 +2,7 @@
 # Same schema as planner/visit_rules.yaml (schema_version 1).
 # - escort_required / telehealth_ok / prep for colonoscopy follow .kiro/steering/visit-rules.md
 #   (sedation needs an escort; procedures are not telehealth; bowel prep sheet).
-# - duration 120 is illustrative, from final_plan/FINAL-slot-to-stop.md section 3.1
+# - duration 120 is illustrative, from final_plan/FINAL-careleap.md section 3.1
 #   ("GI ~ 2h including prep and recovery"). Not a sourced value.
 schema_version: 1
 status: mock

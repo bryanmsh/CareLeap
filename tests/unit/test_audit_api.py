@@ -52,7 +52,7 @@ def tiny_origins() -> pd.DataFrame:
 
 @pytest.fixture
 def client(monkeypatch, tiny_cube, tiny_origins) -> TestClient:
-    monkeypatch.setenv("SLOT_TO_STOP_DATA", "real")
+    monkeypatch.setenv("CARELEAP_DATA", "real")
     app = create_app()
     app.dependency_overrides[get_audit_data] = lambda: AuditSource(
         mode="real", cube=tiny_cube, origins=tiny_origins
@@ -168,7 +168,7 @@ def test_blockgroups_marks_transit_desert(monkeypatch, tiny_cube, tiny_origins):
     from engine.audit import NO_STOP_REASON
     cube = tiny_cube.copy()
     cube.loc[cube.bg_geoid == "250150002002", ["reachable", "reason"]] = [False, NO_STOP_REASON]
-    monkeypatch.setenv("SLOT_TO_STOP_DATA", "real")
+    monkeypatch.setenv("CARELEAP_DATA", "real")
     app = create_app()
     app.dependency_overrides[get_audit_data] = lambda: AuditSource(mode="real", cube=cube,
                                                                    origins=tiny_origins)
@@ -203,5 +203,5 @@ def test_suggest_rejects_bad_blocks_and_unknown_clinic(client):
 
 
 def test_suggest_unavailable_in_mock_mode(monkeypatch):
-    monkeypatch.setenv("SLOT_TO_STOP_DATA", "mock")
+    monkeypatch.setenv("CARELEAP_DATA", "mock")
     assert TestClient(create_app()).get("/suggest", params={"clinic": "c", "day": "mon"}).status_code == 503

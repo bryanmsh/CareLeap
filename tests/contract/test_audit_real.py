@@ -23,7 +23,7 @@ CLINIC = "BAY_GI_SPRINGFIELD"
 
 @pytest.fixture
 def real_client(monkeypatch) -> TestClient:
-    monkeypatch.setenv("SLOT_TO_STOP_DATA", "real")
+    monkeypatch.setenv("CARELEAP_DATA", "real")
     # drop any cached frames from a previous mode so lru_cache reloads cleanly
     from api.deps import _load_cube_origins
     _load_cube_origins.cache_clear()

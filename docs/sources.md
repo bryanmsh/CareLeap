@@ -1,6 +1,6 @@
-# sources.md — fact-check list for FINAL-slot-to-stop.md
+# sources.md — fact-check list for FINAL-careleap.md
 
-Every `(verify)` claim in `final_plan/FINAL-slot-to-stop.md`, with a candidate
+Every `(verify)` claim in `final_plan/FINAL-careleap.md`, with a candidate
 authoritative source and a verification status. Guardrail: every on-screen number
 must carry a source + vintage, or be flagged `unsourced`. Nothing here is asserted
 as a finding until status = `verified` by a human against the primary source.

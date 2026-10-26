@@ -13,7 +13,7 @@ import type { OpenProvenance } from "../components/provenance-context";
 const VISIT_TYPES = ["colonoscopy", "prenatal", "dialysis", "chemo"] as const;
 
 /** Fixed SYNTHETIC demo patient — the UI never collects PHI (product.md). */
-const SYNTHETIC_PATIENT = { id: "maria", origin_bg: "250130001001" };
+const SYNTHETIC_PATIENT = { id: "maria", origin_bg: "250138121032" };
 
 type Phase =
   | { k: "pick" }

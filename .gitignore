@@ -1,5 +1,5 @@
 # ──────────────────────────────────────────────────────────────
-# Slot-to-Stop .gitignore
+# CareLeap .gitignore
 # IMPORTANT: .kiro/ is NEVER ignored. Judges grade what's in it.
 # If you ever see .kiro listed here, delete that line.
 # ──────────────────────────────────────────────────────────────
@@ -59,3 +59,4 @@ data/cache copy/
 
 # frozen demo snapshots (rebuild with `make snapshot`)
 data/snapshots/
+!deploy/snapshot/*.parquet

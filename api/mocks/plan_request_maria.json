@@ -1,5 +1,5 @@
 {
-  "patient": { "id": "maria", "origin_bg": "250130000000", "lang": "es" },
+  "patient": { "id": "maria", "origin_bg": "250138121032", "lang": "es" },
   "visit_type": "colonoscopy",
   "barriers": {
     "has_transport": false,

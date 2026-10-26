@@ -1,4 +1,4 @@
-# Slot-to-Stop: Reachable Care
+# CareLeap: Reachable Care
 ### Final build plan · Hackachusetts 2026 · Healthcare & Biotech · Challenge 3
 
 > **One line:** We show western Massachusetts health systems **which of their own appointments their patients physically can't get to**, and then plan the high-stakes visits so they actually happen.
@@ -25,14 +25,14 @@
 
 ## 0. The idea in 60 seconds
 
-**The old Slot-to-Stop:** a coordinator pasted a few appointment times for *one* patient and saw which ones the bus could reach.
+**The old CareLeap:** a coordinator pasted a few appointment times for *one* patient and saw which ones the bus could reach.
 
 Judges raised three weaknesses:
 1. "Transport alone doesn't fix no-shows."
 2. "A coordinator could check Google Maps."
 3. "It ignores rural towns."
 
-**Slot-to-Stop: Reachable Care** answers all three with two modes on one routing engine.
+**CareLeap: Reachable Care** answers all three with two modes on one routing engine.
 
 | Mode | Who | What it does |
 |---|---|---|
@@ -273,7 +273,7 @@ Options are then ranked by burden (travel time, waiting, cost). **Every rule is 
 
 ### 7.1 Repo layout
 ```
-slot-to-stop/
+careleap/
 ├── .kiro/                     ← MUST be committed (never .gitignore)
 │   ├── steering/              (product, tech, structure, + domain files)
 │   ├── specs/                 (one folder per spec + bugfix specs)
@@ -287,7 +287,7 @@ slot-to-stop/
 ├── api/                       (FastAPI)
 ├── web/                       (React app)
 ├── mcp/                       (gtfs-mcp, reach-mcp, access-resources-mcp)
-├── power/slot-to-stop/        (publishable Kiro power: plugin.json, skills/, mcp.json)
+├── power/careleap/        (publishable Kiro power: plugin.json, skills/, mcp.json)
 ├── data/                      (raw/ + cache/ Parquet; small fixtures committed)
 ├── tests/                     (unit, property, differential, golden trips)
 ├── docs/                      (kiro-journal.md, traceability.md, methods.md, decisions/)
@@ -420,7 +420,7 @@ Hooks guard the *coding agent*. Runtime guardrails such as "no clinical text" an
 | *(existing)* GitHub, Playwright, AWS Documentation | PR/issue automation, end-to-end UI tests, deploy docs | — | Dev workflow |
 
 ### 8.7 Powers: publish one, use catalog ones
-- **Publish `slot-to-stop` power** on GitHub, installable by any team or health system.
+- **Publish `careleap` power** on GitHub, installable by any team or health system.
   - `plugin.json`: keywords "transit, GTFS, appointment, access, clinic schedule, reachability".
   - `mcp.json`: bundles `gtfs-mcp` + `reach-mcp`.
   - `skills/clinic-access-audit/`: how to audit a clinic schedule with any city's GTFS.
@@ -513,12 +513,12 @@ Hooks guard the *coding agent*. Runtime guardrails such as "no clinical text" an
 | 1:00 | Rural lens → Franklin County **"no option" layer** | *"In these towns there is no option at all. That's a finding for planners."* |
 | 1:10 | Switch to **Visit Planner** → Maria (positive FIT) | *"Now one patient. A colonoscopy after a positive test."* |
 | 1:20 | Barrier check (6 taps) → **"Needs an escort — transit won't work."** | *"She'll be sedated. The bus is off the table."* |
-| 1:30 | Plan: a slot after her shift inside a volunteer-driver window + **PT-1 pre-filled** + Spanish prep sheet | *"Slot-to-Stop builds a plan that can actually happen."* |
+| 1:30 | Plan: a slot after her shift inside a volunteer-driver window + **PT-1 pre-filled** + Spanish prep sheet | *"CareLeap builds a plan that can actually happen."* |
 | 1:45 | **Phone mock** shows the day-before itinerary + last bus home; printed card | *"The night before, she gets the whole trip."* |
 | 1:55 | **Kiro segment:** a PBT counterexample shrinks to a `24:30:00` return trip → bugfix spec → green | *"Kiro's property tests caught a bug that would have stranded patients after midnight."* |
 | 2:15 | Click a number → **"How we know this is right"** drawer (requirement → property → test) | *"Every number on screen traces to a spec and a test."* |
 | 2:25 | Slack: **Crew alert** "New PVTA schedule → Holyoke reachability ↓" | *"Kiro Crew watches the bus schedule and re-audits automatically."* |
-| 2:40 | Closing card | *"Slot-to-Stop. Swap in any city's bus data. Every nonprofit hospital in America has to measure access. Now they can."* |
+| 2:40 | Closing card | *"CareLeap. Swap in any city's bus data. Every nonprofit hospital in America has to measure access. Now they can."* |
 
 All numbers in the video are computed from real data at build time, never typed in.
 
@@ -531,7 +531,7 @@ All numbers in the video are computed from real data at build time, never typed 
 4. **Steering:** the four inclusion modes, and the steering on/off experiment.
 5. **MCP:** three custom servers, including resources, prompts and elicitation, and what they made possible (a deterministic demo, Crew re-audits, the agent understanding GTFS).
 6. **Property-based testing:** the 19 properties, the triple differential, and the counterexamples found (the midnight bug, and any others) → bugfix specs.
-7. **Powers:** the published `slot-to-stop` power plus the catalog powers used.
+7. **Powers:** the published `careleap` power plus the catalog powers used.
 8. **Strategy and experiments:** the 5 experiments, ADRs, and lessons promoted to skills.
 9. **Evidence links:** `docs/kiro-journal.md`, `docs/traceability.md`, the README scorecard, PR history.
 
@@ -559,7 +559,7 @@ All numbers in the video are computed from real data at build time, never typed 
 - [ ] Text description of features and functionality
 - [ ] Track: **Healthcare & Biotech, Challenge 3**
 - [ ] Kiro write-up (§11) with links to the journal, traceability and scorecard
-- [ ] Published `slot-to-stop` power link
+- [ ] Published `careleap` power link
 - [ ] All on-screen numbers computed from cited data; synthetic patients only
 
 ---
@@ -570,12 +570,12 @@ The submission form gets **six things**:
 
 | # | Item | What it contains |
 |---|---|---|
-| 1 | **Project name + tagline** | *Slot-to-Stop: Reachable Care* · "We show health systems which appointments their patients physically can't get to — then plan the high-stakes ones so they happen." |
+| 1 | **Project name + tagline** | *CareLeap: Reachable Care* · "We show health systems which appointments their patients physically can't get to — then plan the high-stakes ones so they happen." |
 | 2 | **Track** | Healthcare & Biotech · Challenge 3 ("A referral is not a finished visit") |
 | 3 | **Text description** (~300 words) | Problem → the two modes (Clinic Audit, Visit Planner) → data used → who uses it → how it scales. See the draft below |
 | 4 | **Demo video** (< 3:00, public YouTube) | The script in §15 |
 | 5 | **Public GitHub repo** | All code, `/.kiro` committed at the root, `README.md` with run steps (`make data && make dev`), small data fixtures, and a "Kiro Scorecard" section |
-| 6 | **Kiro write-up** | The §11 outline, with links to `docs/kiro-journal.md`, `docs/traceability.md`, the published `slot-to-stop` power, and example PRs from Kiro Web |
+| 6 | **Kiro write-up** | The §11 outline, with links to `docs/kiro-journal.md`, `docs/traceability.md`, the published `careleap` power, and example PRs from Kiro Web |
 
 **What judges will find in the repo:**
 - `.kiro/specs/`: 7 specs (requirements-first, design-first, quick, plus bugfix specs from real counterexamples)
@@ -583,7 +583,7 @@ The submission form gets **six things**:
 - `.kiro/hooks/`: 11 hooks
 - `.kiro/agents/`: 4 custom agents
 - `.kiro/settings/mcp.json`: 3 custom MCP servers
-- `power/slot-to-stop/`: the publishable power
+- `power/careleap/`: the publishable power
 - `tests/`: 19 property tests plus the brute-force, Connection Scan and R5 differential tests
 - `docs/`: Kiro journal, traceability, decision records, methods and data sources
 - `.github/workflows/`: headless Kiro CLI gates
@@ -591,7 +591,7 @@ The submission form gets **six things**:
 **Draft text description:**
 > Millions of Americans miss care because they can't get there, and the visits missed most often are the ones that matter: colonoscopy after a positive test, prenatal care, dialysis. Clinic schedules are set without asking whether patients without a car can arrive and get home the same day.
 >
-> **Slot-to-Stop: Reachable Care** has two modes. **Clinic Audit** takes a specialty clinic's weekly schedule and, using a round-trip transit router over real PVTA bus data, computes what share of car-less adults in each western Massachusetts neighborhood can make each appointment hour. It breaks results out for environmental-justice and limited-English communities, maps rural towns with no transport option at all, and lets planners drag a clinic block or add a satellite day to see the fix. An optimizer suggests the best changes, and a one-click report feeds the hospital's required Community Health Needs Assessment. **Visit Planner** handles high-stakes visits. A 30-second barrier check (work shift, childcare, escort, cost, language) produces a plan that can actually happen. Sedated colonoscopies never get a bus-only plan, MassHealth PT-1 rides are pre-filled, and patients get the itinerary, including the last bus home, the day before.
+> **CareLeap: Reachable Care** has two modes. **Clinic Audit** takes a specialty clinic's weekly schedule and, using a round-trip transit router over real PVTA bus data, computes what share of car-less adults in each western Massachusetts neighborhood can make each appointment hour. It breaks results out for environmental-justice and limited-English communities, maps rural towns with no transport option at all, and lets planners drag a clinic block or add a satellite day to see the fix. An optimizer suggests the best changes, and a one-click report feeds the hospital's required Community Health Needs Assessment. **Visit Planner** handles high-stakes visits. A 30-second barrier check (work shift, childcare, escort, cost, language) produces a plan that can actually happen. Sedated colonoscopies never get a bus-only plan, MassHealth PT-1 rides are pre-filled, and patients get the itinerary, including the last bus home, the day before.
 >
 > Built with Kiro: spec-driven development, 19 property-based tests with three independent router checks, 11 agent hooks, three custom MCP servers, a published Kiro power, headless CLI gates, Kiro Web PRs, and Kiro Crew monitoring the bus feed and re-auditing schedules. Swap in any US city's GTFS feed and it works there.
 
@@ -618,7 +618,7 @@ The submission form gets **six things**:
 | **1:00–1:10** | 10s | **Rural lens:** Franklin County with the **"no option at all"** layer | "In these towns there is no bus, no dial-a-ride, nothing. That's a finding for planners." | Value (rural), honesty |
 | **1:10–1:15** | 5s | Click **Export CHNA report** → the PDF opens | "One click gives the hospital's required needs-assessment evidence." | Adoption path |
 | **1:15–1:30** | 15s | Switch to **Visit Planner** → **Maria**: positive FIT, works 7–3, Spanish → 6-tap barrier check | "Now one patient: a colonoscopy after a positive cancer screening." | Value (high stakes) |
-| **1:30–1:45** | 15s | Banner: **"Needs an escort — transit won't work."** Plan: a slot after her shift inside a volunteer-driver window, a **PT-1 request pre-filled**, and a **Spanish prep sheet** | "She'll be sedated, so the bus is off the table. Slot-to-Stop builds a plan that can actually happen." | Value, Design |
+| **1:30–1:45** | 15s | Banner: **"Needs an escort — transit won't work."** Plan: a slot after her shift inside a volunteer-driver window, a **PT-1 request pre-filled**, and a **Spanish prep sheet** | "She'll be sedated, so the bus is off the table. CareLeap builds a plan that can actually happen." | Value, Design |
 | **1:45–1:55** | 10s | **Phone mock** shows the day-before itinerary + **last bus home**, plus the printed QR card | "The night before, she gets the whole trip, including how to get home." | Accessibility |
 | **1:55–2:15** | 20s | **Kiro IDE:** a property test fails, shrinks to one `24:30:00` after-midnight trip → Kiro creates a **bugfix spec** → fix → green | "Kiro's property-based tests caught a bug that would have stranded patients after midnight, and turned it into a bugfix spec." | **Kiro depth (PBT, specs)** |
 | **2:15–2:25** | 10s | Back in the app: click any number → **"How we know this is right"** drawer (source → requirement → property → test status) | "Every number on screen traces back to a spec and a passing test." | **Surprising Kiro integration** |

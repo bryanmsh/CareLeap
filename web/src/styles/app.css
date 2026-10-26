@@ -567,6 +567,24 @@ button[aria-pressed="true"] {
 .option-why-label {
   font-weight: 600;
 }
+.option-detail {
+  margin: var(--space-2) 0 0;
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  column-gap: var(--space-3);
+  row-gap: var(--space-1);
+  font-size: var(--fs-1);
+}
+.option-detail > div {
+  display: contents;
+}
+.option-detail dt {
+  color: var(--muted, #555);
+  font-weight: 600;
+}
+.option-detail dd {
+  margin: 0;
+}
 .option-recurrence {
   margin: var(--space-2) 0 0;
   font-size: var(--fs-1);
@@ -712,4 +730,34 @@ button[aria-pressed="true"] {
 }
 .chip-icon {
   font-weight: 700;
+}
+
+/* Ride timeline + reviewed prep sheet (planner) */
+.ride-timeline {
+  margin: var(--space-2) 0;
+  padding-left: 1.25rem;
+}
+.ride-timeline li {
+  margin: var(--space-1) 0;
+}
+.option-detail-prep details {
+  margin-top: var(--space-2);
+}
+.option-detail-prep summary {
+  cursor: pointer;
+  font-weight: 600;
+}
+.prep-sheet {
+  margin-top: var(--space-2);
+  padding: var(--space-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  background: var(--surface, #fff);
+  font-size: var(--fs-1);
+}
+.prep-sheet h4 {
+  margin: 0 0 var(--space-2);
+}
+.prep-sheet h5 {
+  margin: var(--space-3) 0 var(--space-1);
 }

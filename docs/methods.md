@@ -1,6 +1,6 @@
 # methods.md — how each computed number is derived
 
-Every number in Slot-to-Stop carries a source and a method. This file records the
+Every number in CareLeap carries a source and a method. This file records the
 estimation choices made in the data pipeline so reviewers can audit them.
 
 ## origins.parquet (pipeline/build_origins.py)

@@ -1,8 +1,8 @@
-# slot-to-stop — Kiro power
+# careleap — Kiro power
 
 **Reachable Care.** Audit which clinic hours car-less patients can actually reach
 **and return from** by transit (round trip), and debug GTFS routing — against a
-cached GTFS feed, never a live third-party routing API. Wraps the Slot-to-Stop
+cached GTFS feed, never a live third-party routing API. Wraps the CareLeap
 routing engine via two bundled MCP servers, `gtfs-mcp` and `reach-mcp`.
 
 > Logistics only. Every number carries its source and vintage. Reachability is not
@@ -11,23 +11,23 @@ routing engine via two bundled MCP servers, `gtfs-mcp` and `reach-mcp`.
 ## What's in the bundle
 
 ```
-slot-to-stop/
+careleap/
 ├── plugin.json                       # power manifest (name, mcp entry, skills, tags)
-├── mcp.json                          # launches gtfs-mcp + reach-mcp via ${SLOT_TO_STOP_HOME}
+├── mcp.json                          # launches gtfs-mcp + reach-mcp via ${CARELEAP_HOME}
 ├── README.md                         # this file
 └── skills/
     ├── clinic-access-audit.md        # audit a weekly schedule for car-less access
     └── gtfs-debugging.md             # diagnose an unreachable round trip
 ```
 
-The MCP **server code** itself lives in the Slot-to-Stop engine checkout
+The MCP **server code** itself lives in the CareLeap engine checkout
 (`mcp/gtfs-mcp/server.py`, `mcp/reach-mcp/server.py` and the `engine/` package); the
-power references it by the `SLOT_TO_STOP_HOME` env var so the same bundle works from
+power references it by the `CARELEAP_HOME` env var so the same bundle works from
 any workspace.
 
 ## Install (from a fresh workspace)
 
-1. **Check out the Slot-to-Stop engine repo** somewhere on disk and build its venv
+1. **Check out the CareLeap engine repo** somewhere on disk and build its venv
    (the repo ships `pyproject.toml`; the `mcp` package and `engine` must import):
 
    ```bash
@@ -40,13 +40,13 @@ any workspace.
    discovers MCP servers from `<workspace>/.kiro/settings/mcp.json`:
 
    ```bash
-   cp -R /path/to/slot-to-stop  <workspace>/slot-to-stop
+   cp -R /path/to/careleap  <workspace>/careleap
    mkdir -p <workspace>/.kiro/settings
-   cp <workspace>/slot-to-stop/mcp.json  <workspace>/.kiro/settings/mcp.json
+   cp <workspace>/careleap/mcp.json  <workspace>/.kiro/settings/mcp.json
    ```
 
    (Or `kiro-cli mcp import` the file — see the test section. Skills are loaded by
-   pointing your agent at `slot-to-stop/skills/*.md`.)
+   pointing your agent at `careleap/skills/*.md`.)
 
 3. **Set the environment** (see below), then start Kiro in that workspace. Both
    servers appear under the `default` MCP scope.
@@ -58,12 +58,12 @@ secret. None of these are secrets; there is nothing to redact.
 
 | Var                 | Required | Purpose |
 |---------------------|----------|---------|
-| `SLOT_TO_STOP_HOME` | **Yes**  | Absolute path to the Slot-to-Stop engine checkout. Used for both the python interpreter (`${SLOT_TO_STOP_HOME}/.venv/bin/python`) and the server scripts (`${SLOT_TO_STOP_HOME}/mcp/*/server.py`). This is what makes the power portable across workspaces. |
-| `GTFS_DIR`          | No       | Absolute path to a real GTFS directory (e.g. `${SLOT_TO_STOP_HOME}/data/cache/pvta`). When set, `gtfs-mcp` loads that feed. When **unset**, it falls back to a small **synthetic** feed and labels every result `synthetic GTFS (illustrative — not a finding)`. |
+| `CARELEAP_HOME` | **Yes**  | Absolute path to the CareLeap engine checkout. Used for both the python interpreter (`${CARELEAP_HOME}/.venv/bin/python`) and the server scripts (`${CARELEAP_HOME}/mcp/*/server.py`). This is what makes the power portable across workspaces. |
+| `GTFS_DIR`          | No       | Absolute path to a real GTFS directory (e.g. `${CARELEAP_HOME}/data/cache/pvta`). When set, `gtfs-mcp` loads that feed. When **unset**, it falls back to a small **synthetic** feed and labels every result `synthetic GTFS (illustrative — not a finding)`. |
 | `GTFS_DATE`         | No       | ISO `YYYY-MM-DD` service date to resolve the feed to (default `2026-11-12`). |
 
 `reach-mcp` additionally needs the prebuilt reachability cube at
-`${SLOT_TO_STOP_HOME}/data/cache/cube.parquet` (+ `origins.parquet`). If it is
+`${CARELEAP_HOME}/data/cache/cube.parquet` (+ `origins.parquet`). If it is
 missing, `reachability`/`what_if` return a clear `{"error": "...cube cache not
 found..."}` payload rather than crashing — build it with the engine's
 `pipeline/build_cube.py` (slow: ~9 min/clinic).
@@ -105,7 +105,7 @@ may exceed 86400** (a 24:30 departure is `88200`, never wrapped).
 ## The test I ran (fresh-workspace, real output)
 
 I created an empty workspace, copied this bundle in exactly as the Install steps
-above describe, set `SLOT_TO_STOP_HOME` to the engine checkout, then launched each
+above describe, set `CARELEAP_HOME` to the engine checkout, then launched each
 server over stdio using **this power's `mcp.json` command/args** and performed a real
 MCP `initialize` + `tools/list` (and `tools/call`). The clients are tiny stdio MCP
 clients using the installed `mcp` package.
@@ -119,7 +119,7 @@ gtfs-mcp (v0.1.0): round_trip, plan_trip, service_changes, validate_feed
 reach-mcp (v0.1.0): reachability, what_if, suggest_schedule
 ```
 
-Resolved launch command (from `${SLOT_TO_STOP_HOME}`):
+Resolved launch command (from `${CARELEAP_HOME}`):
 
 ```
 <engine>/.venv/bin/python  <engine>/mcp/gtfs-mcp/server.py
@@ -156,12 +156,12 @@ the "every number carries source + vintage" guardrail.
 $ kiro-cli mcp list
 🤖 default:
   kiro_default
-    • gtfs-mcp     ${SLOT_TO_STOP_HOME}/.venv/bin/python
-    • reach-mcp    ${SLOT_TO_STOP_HOME}/.venv/bin/python
+    • gtfs-mcp     ${CARELEAP_HOME}/.venv/bin/python
+    • reach-mcp    ${CARELEAP_HOME}/.venv/bin/python
 
 $ kiro-cli mcp status --name gtfs-mcp
 Scope   : 🤖 default
-Command : ${SLOT_TO_STOP_HOME}/.venv/bin/python
+Command : ${CARELEAP_HOME}/.venv/bin/python
 Env Vars: GTFS_DATE=${GTFS_DATE}, GTFS_DIR=${GTFS_DIR}
 Disabled: false
 ```
@@ -173,23 +173,23 @@ servers correctly.
 ### Reproduce
 
 ```bash
-export SLOT_TO_STOP_HOME=/path/to/engine-checkout
-export GTFS_DIR="$SLOT_TO_STOP_HOME/data/cache/pvta" GTFS_DATE=2026-11-12   # optional
-"$SLOT_TO_STOP_HOME/.venv/bin/python" mcp_test_client.py .kiro/settings/mcp.json  # tools/list
+export CARELEAP_HOME=/path/to/engine-checkout
+export GTFS_DIR="$CARELEAP_HOME/data/cache/pvta" GTFS_DATE=2026-11-12   # optional
+"$CARELEAP_HOME/.venv/bin/python" mcp_test_client.py .kiro/settings/mcp.json  # tools/list
 unset GTFS_DIR GTFS_DATE
-"$SLOT_TO_STOP_HOME/.venv/bin/python" mcp_call_test.py  .kiro/settings/mcp.json   # tools/call
+"$CARELEAP_HOME/.venv/bin/python" mcp_call_test.py  .kiro/settings/mcp.json   # tools/call
 ```
 
 (The two test clients live under the scratch power-test dir used for this run.)
 
 ## Published
 
-Public repo: [SSJ-07/slot-to-stop-power](https://github.com/SSJ-07/slot-to-stop-power)
+Public repo: [SSJ-07/slot-to-stop-power](https://github.com/SSJ-07/slot-to-stop-power) (published under the old name; rename it to `careleap-power` on GitHub and the old URL redirects)
 (release `v0.1.0`). It contains only this bundle — `plugin.json`, `mcp.json`,
 `README.md`, `skills/*.md`. No `.venv`, GTFS cache, or `.env`; `mcp.json` references
 env vars by name only.
 
-**Engine dependency:** tool shapes verified against Slot-to-Stop engine commit
+**Engine dependency:** tool shapes verified against CareLeap engine commit
 `f7fc0c2` (2026-10-24). Re-verified in a fresh workspace on 2026-10-24: both servers
 `initialize` + `tools/list`, `validate_feed` on PVTA returns `ok: true`, and
 `reachability(BAY_GI_SPRINGFIELD, thu)` returns hourly cells from the cube.

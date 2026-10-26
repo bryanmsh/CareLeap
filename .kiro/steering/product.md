@@ -2,7 +2,7 @@
 inclusion: always
 ---
 
-# Product — Slot-to-Stop: Reachable Care
+# Product — CareLeap: Reachable Care
 
 ## Mission
 Show western Massachusetts health systems which of their own appointments their patients

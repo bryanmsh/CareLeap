@@ -119,7 +119,7 @@ def test_real_mode_reports_unavailable(monkeypatch, maria_request):
     from api.main import create_app
     from engine import audit as engine_audit
 
-    monkeypatch.setenv("SLOT_TO_STOP_DATA", "real")
+    monkeypatch.setenv("CARELEAP_DATA", "real")
     # Simulate "cube not built yet" regardless of what is cached on this machine.
     monkeypatch.setattr(engine_audit, "CUBE_PATH", engine_audit.ROOT / "does-not-exist.parquet")
     deps._load_cube_origins.cache_clear()
@@ -143,7 +143,7 @@ def test_maria_real_routing_end_to_end(monkeypatch, maria_request):
 
     from api.main import create_app
 
-    monkeypatch.setenv("SLOT_TO_STOP_DATA", "real")
+    monkeypatch.setenv("CARELEAP_DATA", "real")
     client = TestClient(create_app())
     r = client.post("/plan", json=maria_request)
     assert r.status_code == 200
@@ -159,7 +159,7 @@ def test_real_provenance_serves_from_jsonl(monkeypatch):
 
     from api.main import create_app
 
-    monkeypatch.setenv("SLOT_TO_STOP_DATA", "real")
+    monkeypatch.setenv("CARELEAP_DATA", "real")
     real = TestClient(create_app())
     r = real.get("/provenance", params={"id": "planner-logistics-only"})
     assert r.status_code == 200
@@ -189,7 +189,7 @@ def test_maria_on_real_data_with_stubbed_router(monkeypatch, maria_request):
     from planner.slots import load_slots, slots_for_rule
     from planner.rules import load_rules
 
-    monkeypatch.setenv("SLOT_TO_STOP_DATA", "real")
+    monkeypatch.setenv("CARELEAP_DATA", "real")
 
     # Build a stub router that answers for the real colonoscopy slots. A 16:30 slot
     # gets a clean round trip home after Maria's shift; the 08:00/12:15 slots are

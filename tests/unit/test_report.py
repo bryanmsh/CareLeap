@@ -27,7 +27,7 @@ WEASY = _weasy_ok()
 
 
 def _client(monkeypatch, mode: str) -> TestClient:
-    monkeypatch.setenv("SLOT_TO_STOP_DATA", mode)
+    monkeypatch.setenv("CARELEAP_DATA", mode)
     from api.deps import _load_cube_origins
     _load_cube_origins.cache_clear()
     from api.main import create_app

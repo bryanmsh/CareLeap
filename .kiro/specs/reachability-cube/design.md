@@ -118,7 +118,7 @@ Returns source + vintage for every number: PVTA GTFS (vintage from
 ## 4. API surface
 
 ### 4.1 Data mode — `api/deps.py`
-`SLOT_TO_STOP_DATA` selects `mock` (default) or `real`. `get_audit_data()` returns an
+`CARELEAP_DATA` selects `mock` (default) or `real`. `get_audit_data()` returns an
 `AuditSource`:
 - **mock**: carries the labelled mock payload (`api/mocks/audit.json`); routers return
   it verbatim, day stamped. Keeps the existing contract tests green.

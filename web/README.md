@@ -1,6 +1,6 @@
 # web/
 
-React + Vite + TypeScript frontend for Slot-to-Stop.
+React + Vite + TypeScript frontend for CareLeap.
 
 - **MapLibre GL** block-group map; **D3 (`d3-scale`) only for scales**, React renders the DOM
 - CSS design tokens (`src/styles/tokens.css`), light + dark; WCAG 2.2 AA; large-type ready

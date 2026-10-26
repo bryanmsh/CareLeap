@@ -53,10 +53,13 @@ function anyIllustrative(sources: SuggestSource[]): boolean {
 export function SuggestPanel({
   clinic,
   day,
+  community = "all",
   cells,
 }: {
   clinic: string;
   day: Day;
+  /** the community the audit is scoped to (all | county) */
+  community?: string;
   /** the current audit cells, used to show before -> after on preview */
   cells: AuditResponse["cells"];
 }) {
@@ -92,7 +95,7 @@ export function SuggestPanel({
     setPreview({ kind: "idle" });
     setState({ kind: "loading" });
     const ac = new AbortController();
-    getSuggest({ clinic, day, k: 3, blocks: selected }, ac.signal)
+    getSuggest({ clinic, day, k: 3, blocks: selected, community }, ac.signal)
       .then((data) => setState({ kind: "ready", data }))
       .catch((err: unknown) => {
         if (err instanceof ApiError && err.status === 503) {
@@ -103,7 +106,7 @@ export function SuggestPanel({
           err instanceof ApiError ? err.message : t("suggest.error");
         setState({ kind: "error", message });
       });
-  }, [clinic, day, selected, t]);
+  }, [clinic, day, community, selected, t]);
 
   const runPreview = useCallback(
     (change: Suggestion["change"]) => {
@@ -112,7 +115,7 @@ export function SuggestPanel({
       setPreview({ kind: "loading", block: change.block });
       const ac = new AbortController();
       postWhatIf(
-        { clinic, shift: { block: change.block, to: change.to } },
+        { clinic, community, shift: { block: change.block, to: change.to } },
         ac.signal,
       )
         .then((next) => {
@@ -132,7 +135,7 @@ export function SuggestPanel({
           setPreview({ kind: "error", message });
         });
     },
-    [clinic, cells, shareOfBlock, t],
+    [clinic, community, cells, shareOfBlock, t],
   );
 
   const changes = state.kind === "ready" ? state.data.changes : [];

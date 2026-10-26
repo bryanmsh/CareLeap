@@ -2,14 +2,14 @@
   "_mock_notice": "MOCK answers standing in for engine.round_trip (M1). Stops and route 'MOCK-*' are not PVTA. Times are seconds since local midnight. Queries not listed here are reported unreachable.",
   "records": [
     {
-      "origin": "250130000000", "clinic": "mock-clinic-gi", "date": "2026-11-12", "start": 28800,
+      "origin": "250138121032", "clinic": "mock-clinic-gi", "date": "2026-11-12", "start": 28800,
       "result": {
         "reachable": false, "out_legs": [], "ret_legs": [], "last_bus_home": null,
         "reason": "MOCK: no outbound arrival before the check-in buffer"
       }
     },
     {
-      "origin": "250130000000", "clinic": "mock-clinic-gi", "date": "2026-11-12", "start": 55800,
+      "origin": "250138121032", "clinic": "mock-clinic-gi", "date": "2026-11-12", "start": 55800,
       "result": {
         "reachable": true,
         "out_legs": [

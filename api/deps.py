@@ -1,6 +1,6 @@
 """FastAPI dependencies: where each endpoint's data comes from.
 
-`SLOT_TO_STOP_DATA` selects the data mode:
+`CARELEAP_DATA` selects the data mode:
   mock (default) - labelled mocks in api/mocks/ (H1 scaffold).
   real           - real files/engine only. Anything not landed yet returns 503 rather
                    than falling back to mock data silently.
@@ -35,7 +35,7 @@ REAL_RULES_PATH = REPO_ROOT / "planner" / "visit_rules.yaml"
 REAL_PT1_PATH = REPO_ROOT / "data" / "manual" / "pt1_fields.json"
 REAL_CLINIC_SCHEDULE_PATH = REPO_ROOT / "data" / "manual" / "clinic_schedules.csv"
 REAL_PROVENANCE_PATH = REPO_ROOT / "docs" / "provenance.jsonl"
-REAL_PVTA_DIR = cache_dir() / "pvta"  # SLOT_TO_STOP_CACHE_DIR-aware (make demo)
+REAL_PVTA_DIR = cache_dir() / "pvta"  # CARELEAP_CACHE_DIR-aware (make demo)
 REAL_ORIGINS_PATH = cache_dir() / "origins.parquet"
 REAL_CLINIC_STOPS_PATH = REPO_ROOT / "data" / "manual" / "clinic_stops.csv"
 
@@ -44,9 +44,9 @@ CandidateSlotSource = Callable[[VisitRule], Sequence[CandidateSlot]]
 
 
 def data_mode() -> DataMode:
-    mode = os.environ.get("SLOT_TO_STOP_DATA", "mock")
+    mode = os.environ.get("CARELEAP_DATA", "mock")
     if mode not in ("mock", "real"):
-        raise RuntimeError(f"SLOT_TO_STOP_DATA must be 'mock' or 'real', got {mode!r}")
+        raise RuntimeError(f"CARELEAP_DATA must be 'mock' or 'real', got {mode!r}")
     return mode  # type: ignore[return-value]
 
 
@@ -186,6 +186,20 @@ def get_pt1_fields() -> tuple[Pt1Field, ...]:
         raise _unavailable("PT-1 field list") from exc
 
 
+def _slot_window() -> tuple[str, str]:
+    """[today, today + CARELEAP_SLOT_HORIZON_DAYS] as ISO dates.
+
+    CARELEAP_TODAY freezes "today" so a frozen demo snapshot (whose slots were
+    generated for a fixed date range) keeps answering the same way; `make demo` sets it.
+    """
+    import datetime as _dt
+
+    today_s = os.environ.get("CARELEAP_TODAY", "").strip()
+    today = _dt.date.fromisoformat(today_s) if today_s else _dt.date.today()
+    days = int(os.environ.get("CARELEAP_SLOT_HORIZON_DAYS", "14"))
+    return today.isoformat(), (today + _dt.timedelta(days=days)).isoformat()
+
+
 def get_candidate_slot_source() -> CandidateSlotSource:
     if data_mode() == "real":
         # Real mode: demo/illustrative slots from data/manual/clinic_schedules.csv (M3).
@@ -195,8 +209,12 @@ def get_candidate_slot_source() -> CandidateSlotSource:
         except ClinicScheduleError as exc:
             raise _unavailable("Clinic schedules (data/manual/clinic_schedules.csv, M3)") from exc
 
+        today, horizon = _slot_window()
+
         def real_source(rule: VisitRule) -> list[CandidateSlot]:
-            return slots_for_rule(scheduled, rule)
+            # Only slots from today through today + horizon: a past date is not an option,
+            # and a navigator books within a short window. Both ends are dates, no times.
+            return [s for s in slots_for_rule(scheduled, rule) if today <= s.date <= horizon]
 
         return real_source
     by_type = mocks.load("planner/candidate_slots.json")["slots"]
@@ -205,6 +223,32 @@ def get_candidate_slot_source() -> CandidateSlotSource:
         return [CandidateSlot(**s) for s in by_type.get(rule.visit_type, [])]
 
     return source
+
+
+@functools.lru_cache(maxsize=1)
+def get_clinic_info() -> dict[str, dict[str, str]]:
+    """clinic_id -> {name, address, town} from data/manual/clinics.csv (first row per
+    clinic), with clinic_stops.csv names as a fallback. Committed manual data, so the
+    same in mock and real mode."""
+    import csv as _csv
+
+    info: dict[str, dict[str, str]] = {}
+    clinics_csv = REPO_ROOT / "data" / "manual" / "clinics.csv"
+    if clinics_csv.is_file():
+        with clinics_csv.open(encoding="utf-8", newline="") as fh:
+            for row in _csv.DictReader(fh):
+                cid = (row.get("clinic_id") or "").strip()
+                if cid and cid not in info:
+                    info[cid] = {"name": row.get("clinic_name", "").strip(),
+                                 "address": row.get("address", "").strip(),
+                                 "town": row.get("town", "").strip()}
+    if REAL_CLINIC_STOPS_PATH.is_file():
+        with REAL_CLINIC_STOPS_PATH.open(encoding="utf-8", newline="") as fh:
+            for row in _csv.DictReader(fh):
+                cid = (row.get("clinic_id") or "").strip()
+                if cid and cid not in info:
+                    info[cid] = {"name": row.get("clinic_name", "").strip(), "address": "", "town": ""}
+    return info
 
 
 def get_round_trip() -> RoundTripFn:

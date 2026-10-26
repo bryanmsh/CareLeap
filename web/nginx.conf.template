@@ -1,0 +1,27 @@
+server {
+    listen ${PORT};
+    server_name _;
+    root /usr/share/nginx/html;
+    index index.html;
+
+    # Hash routing (#/audit, #/planner): every path serves the app shell.
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+
+    # MapLibre's worker is an ES module (.mjs). Browsers refuse a module worker served
+    # with a non-JavaScript MIME type, and older nginx mime.types lack .mjs.
+    location ~ \.mjs$ {
+        types { }
+        default_type application/javascript;
+        add_header Cache-Control "public, max-age=31536000, immutable";
+    }
+
+    # Long-cache the fingerprinted build assets; never cache the shell.
+    location /assets/ {
+        add_header Cache-Control "public, max-age=31536000, immutable";
+    }
+    location = /index.html {
+        add_header Cache-Control "no-cache";
+    }
+}

@@ -2,7 +2,7 @@
 
 Illustrative only. Nothing here is computed or sourced. While mocks are active the API
 sends `X-Data-Mode: mock` on every response, and every mock source is named "MOCK ...".
-Set `SLOT_TO_STOP_DATA=real` to disable mocks; endpoints whose real data has not landed
+Set `CARELEAP_DATA=real` to disable mocks; endpoints whose real data has not landed
 return 503 instead of falling back.
 
 | File | Stands in for | Replaced by |

@@ -11,4 +11,4 @@ Hand-collected data, every row cited. Owner: M3.
 Related files outside this folder:
 - `planner/visit_rules.yaml` — visit-type logistics rulebook
 - `planner/templates/{en,es}/*.md` + `signoff.json` — patient-facing templates (reviewed=false)
-- `docs/sources.md` — fact-check list for FINAL-slot-to-stop.md `(verify)` claims
+- `docs/sources.md` — fact-check list for FINAL-careleap.md `(verify)` claims

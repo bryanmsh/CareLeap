@@ -51,9 +51,9 @@ Derived from `design.md`. Each requirement has a stable id `RC-n`.
 
 ## API behaviour
 
-- **RC-17** — While `SLOT_TO_STOP_DATA=mock`, the system SHALL serve the labelled mock
+- **RC-17** — While `CARELEAP_DATA=mock`, the system SHALL serve the labelled mock
   payload for `/audit` and `/whatif` (day stamped), unchanged from the H1 scaffold.
-- **RC-18** — While `SLOT_TO_STOP_DATA=real`, the system SHALL aggregate the real cube
+- **RC-18** — While `CARELEAP_DATA=real`, the system SHALL aggregate the real cube
   through `engine.audit`, loading and caching cube + origins once per process.
 - **RC-19** — While in real mode, when `cube.parquet` or `origins.parquet` is missing,
   the system SHALL respond `503` and SHALL NOT fall back to mock data.

@@ -233,7 +233,7 @@ Verdict rule: `transit` if any cube cell for the block group is reachable; other
 `assisted_only` if `has_any_option` is TRUE, else `none`.
 
 ### Serving a frozen snapshot
-`SLOT_TO_STOP_CACHE_DIR=<dir>` redirects every cache path (`cube.parquet`,
+`CARELEAP_CACHE_DIR=<dir>` redirects every cache path (`cube.parquet`,
 `origins.parquet`, `bg_towns.parquet`, `pvta/`, `manifest.json`). `make snapshot` freezes
 `data/cache/` into `data/snapshots/demo-v1/`; `make demo` serves it in real mode.
 

@@ -35,3 +35,8 @@ outcome: 500 tests green; plan_b stays null until a human signs signoff.json
 what: B3: engine/equity.py carries ACS 90% MOEs to CIs on the EJ/LEP/65+/zero-vehicle shares; /audit equity_ci; contracts.md + contract shapes updated
 kiro: Crew added the ACS _M fetch (separate file, 50-var API limit), Census handbook ch.8 formulas, 10 Hypothesis/unit tests; property shrink found float-cancellation + tiny-n overflow, both fixed
 outcome: CI shares equal equity shares exactly; e.g. BAY_GI zero_veh 50.8% [47.9, 53.6]; contract + property suites green
+
+## 2026-10-24 19:38 · m3-bryan · Crew · topic: spec
+what: B4: spec audit-report-pdf + GET /report (WeasyPrint PDF or HTML), one page per clinic from engine.audit, CIs, sources, method
+kiro: Crew wrote router + 6 tests; ran the content-reviewer agent headless (after narrowing its resources, which overflowed on the 12 MB schedules + FRTA feed): 0 guardrail violations, 5 wording fixes applied
+outcome: 516 passed, 1 skipped (real PDF render needs GTK on Windows; runs in CI)

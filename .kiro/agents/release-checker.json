@@ -1,6 +1,6 @@
 {
   "name": "release-checker",
-  "description": "CI gate for Slot-to-Stop. Read-only on code; runs the test suites (unit, property, differential, golden) and reports pass/fail. Used headless in GitHub Actions on every PR. Writes nothing to the repo.",
+  "description": "CI gate for CareLeap. Read-only on code; runs the test suites (unit, property, differential, golden) and reports pass/fail. Used headless in GitHub Actions on every PR. Writes nothing to the repo.",
   "model": "auto",
   "tools": ["fs_read", "execute_bash"],
   "allowedTools": ["fs_read", "execute_bash"],

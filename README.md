@@ -1,4 +1,4 @@
-# Slot-to-Stop: Reachable Care
+# CareLeap: Reachable Care
 
 > We show western Massachusetts health systems **which of their own appointments their
 > patients physically can't get to**, and then plan the high-stakes visits so they
@@ -17,7 +17,7 @@ Hackachusetts 2026 · Healthcare & Biotech · Challenge 3 ("A referral is not a 
 ## Repo layout
 
 ```
-slot-to-stop/
+careleap/
 ├── .kiro/          Kiro steering, specs, hooks, agents, skills, MCP config (COMMITTED)
 ├── AGENTS.md       Always-on agent rules
 ├── engine/         GTFS ingest, RAPTOR, CSA, brute force, reachability cube, optimizer
@@ -45,7 +45,7 @@ make data           # download raw sources (~35 MB) + build every cache:
 make test           # fast suite: unit + property + golden + contract (CI runs this)
 make test-full      # + slow differential (real-feed RAPTOR == CSA) + full Hypothesis
 
-SLOT_TO_STOP_DATA=real make api   # API on :8000 against data/cache
+CARELEAP_DATA=real make api   # API on :8000 against data/cache
 make web            # Vite dev server on :5173 (cd web && npm install first)
 make dev            # both
 
@@ -89,11 +89,11 @@ number below is one we can reproduce in this repo.
 | **Differential tests** | `tests/differential/` (242 cases: 240 synthetic + 2 real-feed) | RAPTOR == CSA == brute-force oracle over **120 random feeds × 2** (reachability + earliest-arrival), **0 disagreements**. Caught 2 router bugs during bring-up (origin foot-transfers; CSA transfer-unlock). Then the **real-feed** run (`test_real_feed_agree.py`: 40 random PVTA round trips + 3 full earliest-arrival maps) caught the **oracle bug** above — two agreeing oracles were both wrong, and only the real network had the trap shape (long-first, short-later arrival at a hub). Lesson for the write-up: a differential test is only as strong as its inputs. Now **0 disagreements** on the real feed too. |
 | **Golden trips** | `tests/golden/` (4 tests: 3 PVTA + 1 FRTA) | Real PVTA feed caught the **transfer-limit bug** the synthetic feeds never produced (RAPTOR boarded from same-round stops → >2 transfers). FRTA Route 32 golden trip pins the multi-feed loader. |
 | **Contract tests** | `tests/contract/` (19 tests) + `tests/unit/test_rural_api.py` (7) | API shape + real-cube contract (hourly share not flat: 7am 19% → noon 45% → 6pm 14%). `/rural` contract pinned before the UI: verdict rule as a Hypothesis property; real data = 320 block groups transit-reachable, **86 assisted-only (3,270 car-less adults)**, 0 with nothing, 100 outside the rural table. |
-| **Custom agents** | `.kiro/agents/*.json` | `router-dev`, `slot-to-stop-dev`, `audit-runner`, `content-reviewer`, `release-checker` — scoped tool/permission profiles + agent hooks. |
+| **Custom agents** | `.kiro/agents/*.json` | `router-dev`, `careleap-dev`, `audit-runner`, `content-reviewer`, `release-checker` — scoped tool/permission profiles + agent hooks. |
 | **MCP servers** | `mcp/`, `.kiro/settings/mcp.json` | `gtfs-mcp` — **wired to real engine** (`round_trip`, `Timetable`). `reach-mcp` — **wired to real engine** (`engine.audit` + `engine.optimizer`, `suggest_schedule`). `access-resources-mcp` — **wired to the manual data** (`rural_options`, `pt1_prefill`, `visit_rules` + the rural table as a resource; M3). No stubs remain. |
-| **Hooks** | `.kiro/hooks/` (IDE) + `.kiro/agents/slot-to-stop-dev.json` (CLI) — see [`.kiro/hooks/README.md`](.kiro/hooks/README.md) | **11 of 11 planned.** CLI (agent `slot-to-stop-dev`): #1 feed-freshness on `agentSpawn`, #2 template reminder, #3 block template writes without sign-off, #4 block live routing APIs (exit 2 → "use gtfs-mcp"), #5 provenance log. IDE (8 `.kiro.hook` files): #1 session-start feed expiry, #6 fast router suite on `engine/**` save, #7 axe on `web/**` save, #8 GTFS validate, #9 data freshness, #10 traceability, #11 two journal hooks. 35 script tests. File hooks fire only on agent edits, so CI repeats the checks. |
+| **Hooks** | `.kiro/hooks/` (IDE) + `.kiro/agents/careleap-dev.json` (CLI) — see [`.kiro/hooks/README.md`](.kiro/hooks/README.md) | **11 of 11 planned.** CLI (agent `careleap-dev`): #1 feed-freshness on `agentSpawn`, #2 template reminder, #3 block template writes without sign-off, #4 block live routing APIs (exit 2 → "use gtfs-mcp"), #5 provenance log. IDE (8 `.kiro.hook` files): #1 session-start feed expiry, #6 fast router suite on `engine/**` save, #7 axe on `web/**` save, #8 GTFS validate, #9 data freshness, #10 traceability, #11 two journal hooks. 35 script tests. File hooks fire only on agent edits, so CI repeats the checks. |
 | **CI** | `.github/workflows/kiro-ci.yml` ([docs/ci.md](docs/ci.md)) | Jobs `test` (pytest + `kiro-cli agent validate`), `web` (tsc, vitest, Playwright e2e, axe), `release-gate` (headless `kiro-cli chat --no-interactive --agent release-checker`). The gate self-skips: kiro-cli 2.34.0 has no non-interactive login yet. Squash-merge kept a 6.5 MB data zip out of `main` (PR #7). |
-| **Power** | `power/slot-to-stop/` | `plugin.json`, `mcp.json` (gtfs-mcp + reach-mcp via `SLOT_TO_STOP_HOME`), 2 skills. Installed into a fresh empty workspace and driven over MCP stdio: `tools/list` + a real `round_trip` call passed. Found a real bug: the tool was exposed as `round_trip_tool`, not the contract name `round_trip` — fixed. Not yet published. |
+| **Power** | `power/careleap/` | `plugin.json`, `mcp.json` (gtfs-mcp + reach-mcp via `CARELEAP_HOME`), 2 skills. Installed into a fresh empty workspace and driven over MCP stdio: `tools/list` + a real `round_trip` call passed. Found a real bug: the tool was exposed as `round_trip_tool`, not the contract name `round_trip` — fixed. Not yet published. |
 | **Crew** | `ops/crew/`, `docs/kiro-journal/` | Ran Phase A and Phase B as parallel agents on disjoint files (every claimed file/test re-checked). Two no-LLM script crons live: PVTA feed heartbeat every 6 h (ETag/Last-Modified diff → Slack) and a 14-day feed-expiry alarm. Slack alert pending Slack hookup. |
 | **Kiro Web** | GitHub issues [#8](https://github.com/SSJ-07/hackachusetts/issues/8), [#9](https://github.com/SSJ-07/hackachusetts/issues/9), [#10](https://github.com/SSJ-07/hackachusetts/issues/10) | Issues opened for Kiro Web Autonomous (i18n, phone itinerary, QR card). PRs not yet opened — experiment ⑤. |
 

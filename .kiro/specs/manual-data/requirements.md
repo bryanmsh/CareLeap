@@ -4,7 +4,7 @@ Manual Data Collection (M3). Branch: `M3-Bryan`. Owner: M3. Status: draft.
 
 ## Introduction
 
-The Slot-to-Stop app depends on hand-collected, every-row-cited data that cannot be
+The CareLeap app depends on hand-collected, every-row-cited data that cannot be
 pulled from a single machine-readable feed: posted clinic hours, per-town rural ride
 options, the MassHealth PT-1 form schema, barrier-screening questions, the visit-type
 logistics rulebook, human-reviewed patient templates, and a fact-check list for the
@@ -120,7 +120,7 @@ claim traced to a source or flagged.
 
 Acceptance criteria:
 - R7.1 THE file `docs/sources.md` SHALL contain one entry per `(verify)` claim in
-  `final_plan/FINAL-slot-to-stop.md`.
+  `final_plan/FINAL-careleap.md`.
 - R7.2 EACH entry SHALL carry claim text, a candidate source (name + URL where known),
   vintage, and a status of `verified | needs-manual-verification | unsourced`.
 - R7.3 NO URL SHALL be fabricated; an unconfirmed source SHALL be a domain-level

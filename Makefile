@@ -1,4 +1,4 @@
-# Slot-to-Stop — daily-driver commands (plan.md §7).
+# CareLeap — daily-driver commands (plan.md §7).
 #   make data       download raw sources + build every cache, incl. one cube per clinic
 #   make test       fast suite (unit + property fast profile + golden + contract)
 #   make test-full  everything, incl. slow differential / full Hypothesis profiles
@@ -8,13 +8,16 @@
 PYTHON ?= python
 SNAPSHOT ?= data/snapshots/demo-v1
 CUBE_DATE ?= 2026-11-12
+# Frozen "today" for the frozen snapshot: the demo slots in clinic_schedules.csv cover
+# 2026-10-10..11-10, so the planner's [today, today+14d] window must sit inside that.
+DEMO_TODAY ?= 2026-10-26
 # Clinic ids come from the manual clinic table, so a new clinic row is picked up
 # automatically by `make data` — nobody has to hand-list clinics here.
 CLINICS := $(shell tail -n +2 data/manual/clinic_stops.csv | cut -d, -f1)
 CUBE_PARTS := $(CLINICS:%=data/cache/cubes/%.parquet)
 
 .PHONY: install api web dev test test-full test-contract test-planner \
-        data raw pvta origins stops-walk towns cubes snapshot demo clean-cache
+        data raw pvta origins stops-walk towns cubes snapshot demo deploy-snapshot clean-cache
 
 install:
 	$(PYTHON) -m pip install -e ".[dev,pipeline]"
@@ -89,8 +92,16 @@ snapshot:
 
 demo:
 	@test -f $(SNAPSHOT)/cube.parquet || { echo "no snapshot at $(SNAPSHOT): run 'make snapshot' (or 'make data' first)"; exit 1; }
-	SLOT_TO_STOP_DATA=real SLOT_TO_STOP_CACHE_DIR=$(SNAPSHOT) \
+	CARELEAP_DATA=real CARELEAP_CACHE_DIR=$(SNAPSHOT) CARELEAP_TODAY=$(DEMO_TODAY) \
 	  $(PYTHON) -m uvicorn api.main:app --port 8000
+
+# Refresh the small COMMITTED snapshot the Docker/Railway image serves (deploy/snapshot/).
+deploy-snapshot:
+	mkdir -p deploy/snapshot
+	cp data/cache/cube.parquet data/cache/origins.parquet data/cache/stops_walk.parquet \
+	   data/cache/bg_towns.parquet deploy/snapshot/
+	cp data/raw/manifest.json data/raw/pvta_gtfs.zip deploy/snapshot/
+	@du -sh deploy/snapshot
 
 clean-cache:
 	rm -rf data/cache/cubes data/cache/*.parquet

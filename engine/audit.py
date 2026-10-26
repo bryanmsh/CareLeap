@@ -27,7 +27,7 @@ import pandas as pd
 
 from engine.paths import ROOT, cache_dir
 
-# SLOT_TO_STOP_CACHE_DIR redirects these (make demo serves data/snapshots/demo-v1/).
+# CARELEAP_CACHE_DIR redirects these (make demo serves data/snapshots/demo-v1/).
 CUBE_PATH = cache_dir() / "cube.parquet"
 ORIGINS_PATH = cache_dir() / "origins.parquet"
 MANIFEST_PATH = (cache_dir() / "manifest.json") if (cache_dir() / "manifest.json").exists() else ROOT / "data" / "raw" / "manifest.json"
@@ -114,7 +114,7 @@ def sources() -> list[dict[str, Any]]:
          "url": "https://api.census.gov/data/2024/acs/acs5"},
         {"name": "MassGIS Environmental Justice 2020", "vintage": _vintage("ej_west", "2020"),
          "url": "https://www.mass.gov/info-details/massgis-data-2020-environmental-justice-populations"},
-        {"name": "Slot-to-Stop reachability cube (engine.round_trip)", "vintage": "built from the feed above",
+        {"name": "CareLeap reachability cube (engine.round_trip)", "vintage": "built from the feed above",
          "url": None},
         {"name": "ACS 5-yr 90% margins of error (equity_ci)",
          "vintage": _vintage("acs_bg_moe", "ACS 2024 5-year (90% MOE)"),

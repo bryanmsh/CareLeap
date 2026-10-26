@@ -11,7 +11,7 @@ MOCKS = Path(__file__).resolve().parents[2] / "api" / "mocks"
 
 @pytest.fixture
 def client(monkeypatch) -> TestClient:
-    monkeypatch.setenv("SLOT_TO_STOP_DATA", "mock")
+    monkeypatch.setenv("CARELEAP_DATA", "mock")
     return TestClient(create_app())
 
 

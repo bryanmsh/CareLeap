@@ -10,6 +10,7 @@ from fastapi import APIRouter, Depends, HTTPException, status
 from api.deps import (
     CandidateSlotSource,
     get_candidate_slot_source,
+    get_clinic_info,
     get_pt1_fields,
     get_round_trip,
     get_visit_rules,
@@ -72,6 +73,7 @@ def create_plan(
     slots_for: Annotated[CandidateSlotSource, Depends(get_candidate_slot_source)],
     round_trip: Annotated[RoundTripFn, Depends(get_round_trip)],
     pt1_fields: Annotated[tuple[Pt1Field, ...], Depends(get_pt1_fields)],
+    clinics: Annotated[dict[str, dict[str, str]], Depends(get_clinic_info)],
 ) -> PlanResponse:
     rule = rules.get(request.visit_type)
     if rule is None:
@@ -81,7 +83,8 @@ def create_plan(
         )
     patient, barriers = _to_inputs(request)
     try:
-        plan = plan_visit(patient, rule, barriers, slots_for(rule), round_trip, pt1_fields)
+        plan = plan_visit(patient, rule, barriers, slots_for(rule), round_trip, pt1_fields,
+                          clinics=clinics)
     except GuardrailViolation:
         log.exception("plan withheld by logistics-only guardrail")
         raise HTTPException(

@@ -125,16 +125,19 @@ export interface SuggestQuery {
   k?: number;
   /** the clinic's CURRENT block start hours for that day, e.g. [7, 8, 17]. */
   blocks?: number[];
+  /** optimize for this community (all | county); defaults to all. */
+  community?: string;
 }
 
 /** GET /suggest?clinic&day&k&blocks — top-k schedule changes (optimizer).
  * Returns 503 in mock mode (no real cube): the UI shows "needs real data". */
 export function getSuggest(
-  { clinic, day, k = 3, blocks }: SuggestQuery,
+  { clinic, day, k = 3, blocks, community }: SuggestQuery,
   signal?: AbortSignal,
 ): Promise<SuggestResponse> {
   const q = new URLSearchParams({ clinic, day, k: String(k) });
   if (blocks && blocks.length > 0) q.set("blocks", blocks.join(","));
+  if (community && community !== "all") q.set("community", community);
   return request<SuggestResponse>(`/suggest?${q.toString()}`, { signal });
 }
 

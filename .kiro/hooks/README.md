@@ -1,4 +1,4 @@
-# Kiro hooks — Slot-to-Stop
+# Kiro hooks — CareLeap
 
 This repo uses two kinds of Kiro hook:
 
@@ -8,7 +8,7 @@ This repo uses two kinds of Kiro hook:
 - **CLI agent hooks** — declared under the `"hooks"` key of a CLI agent config in
   `.kiro/agents/<agent>.json`. They fire when that agent runs under `kiro-cli`,
   keyed on agent lifecycle / tool-use events. The guardrail hooks below live on
-  **`.kiro/agents/slot-to-stop-dev.json`**.
+  **`.kiro/agents/careleap-dev.json`**.
 
 > **File hooks fire only on agent/IDE edits.** A change made outside the IDE
 > (a merge, a teammate's push, a script run in CI) does **not** trigger a file
@@ -34,11 +34,11 @@ The hook receives a JSON event on stdin (`hook_event_name`, `cwd`, `tool_name`,
 
 | # | Hook | Trigger | Trigger verified? | Lives in | Owner | Action |
 |---|------|---------|-------------------|----------|-------|--------|
-| 1 | feed-expiry-on-session-start | `sessionStart` (IDE) + `agentSpawn` (CLI, on `slot-to-stop-dev`) | ⚠️ IDE trigger **UNVERIFIED**; CLI ✅ verified | IDE `.kiro.hook` + CLI agent | M1 | `scripts/hooks/check_data_fresh.py` — warn (never block) if the manifest is >7 days old or the PVTA feed ends within 14 days |
-| 2 | remind-templates | `userPromptSubmit` | ✅ verified (CLI) | CLI agent `slot-to-stop-dev` | this task (W2) | `scripts/hooks/remind_templates.py` — remind: patient-facing text only from reviewed templates |
-| 3 | guard-templates | `preToolUse` (matcher `write`) | ✅ verified (CLI) | CLI agent `slot-to-stop-dev` | this task (W2) | `scripts/hooks/guard_templates.py` — **exit 2** if a `planner/templates/**` write does not also move `planner/templates/signoff.json` |
-| 4 | block-live-routing | `preToolUse` (matchers `shell`, `web`) | ✅ verified (CLI) | CLI agent `slot-to-stop-dev` | this task (W2) | `scripts/hooks/block_live_routing.py` — **exit 2** on `maps.googleapis.com`, OSRM, or Mapbox Directions; message `use gtfs-mcp` |
-| 5 | log-provenance | `postToolUse` (matcher `@gtfs-mcp`) | ✅ verified (CLI) | CLI agent `slot-to-stop-dev` | this task (W2) | `scripts/hooks/log_provenance.py` — append one JSON line `{ts, tool, input, sources?, session}` to `docs/provenance-log.jsonl` |
+| 1 | feed-expiry-on-session-start | `sessionStart` (IDE) + `agentSpawn` (CLI, on `careleap-dev`) | ⚠️ IDE trigger **UNVERIFIED**; CLI ✅ verified | IDE `.kiro.hook` + CLI agent | M1 | `scripts/hooks/check_data_fresh.py` — warn (never block) if the manifest is >7 days old or the PVTA feed ends within 14 days |
+| 2 | remind-templates | `userPromptSubmit` | ✅ verified (CLI) | CLI agent `careleap-dev` | this task (W2) | `scripts/hooks/remind_templates.py` — remind: patient-facing text only from reviewed templates |
+| 3 | guard-templates | `preToolUse` (matcher `write`) | ✅ verified (CLI) | CLI agent `careleap-dev` | this task (W2) | `scripts/hooks/guard_templates.py` — **exit 2** if a `planner/templates/**` write does not also move `planner/templates/signoff.json` |
+| 4 | block-live-routing | `preToolUse` (matchers `shell`, `web`) | ✅ verified (CLI) | CLI agent `careleap-dev` | this task (W2) | `scripts/hooks/block_live_routing.py` — **exit 2** on `maps.googleapis.com`, OSRM, or Mapbox Directions; message `use gtfs-mcp` |
+| 5 | log-provenance | `postToolUse` (matcher `@gtfs-mcp`) | ✅ verified (CLI) | CLI agent `careleap-dev` | this task (W2) | `scripts/hooks/log_provenance.py` — append one JSON line `{ts, tool, input, sources?, session}` to `docs/provenance-log.jsonl` |
 | 6 | engine-fast-tests-on-save | `fileEdited` (matcher `engine/**`) | ✅ verified | IDE `.kiro.hook` | M1 | `pytest tests/property tests/golden tests/differential -q -x -m "not slow"` — fast router suite on every engine save; CI repeats it (`make test`) |
 | 7 | a11y-on-web-save | `fileEdited` (matcher `web/**`) | ✅ verified | IDE `.kiro.hook` | this task (W2) | `cd web && npm run a11y` |
 | 8 | validate-gtfs-on-create | `fileCreated` | ⚠️ **UNVERIFIED** | IDE `.kiro.hook` | this task (W2) | `scripts/hooks/validate_gtfs.py <path>` — structural GTFS check |
@@ -53,7 +53,7 @@ Notes:
   (`journal-on-spec-steering-save.kiro.hook`, `journal-on-task-finish.kiro.hook`),
   which are the reference `.kiro.hook` JSON shape the new IDE hooks copy.
 - The CLI guardrail hooks (#2–#5) only fire for an agent whose config declares
-  them. They are on `slot-to-stop-dev`; add the same `"hooks"` block to another
+  them. They are on `careleap-dev`; add the same `"hooks"` block to another
   CLI agent config to carry the guardrails there too.
 
 ## Hook JSON shapes
@@ -89,7 +89,7 @@ Notes:
 Validate a CLI agent config (including its `hooks`) with:
 
 ```
-kiro-cli agent validate --path .kiro/agents/slot-to-stop-dev.json
+kiro-cli agent validate --path .kiro/agents/careleap-dev.json
 ```
 
 ## The hook scripts

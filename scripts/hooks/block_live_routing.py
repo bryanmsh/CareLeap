@@ -2,7 +2,7 @@
 """Hook #4 — preToolUse (shell + web) live-routing blocker.
 
 Blocks a shell command or web fetch that reaches a live third-party routing /
-directions API. Slot-to-Stop must use deterministic cached GTFS via `gtfs-mcp`
+directions API. CareLeap must use deterministic cached GTFS via `gtfs-mcp`
 (AGENTS.md "Prefer deterministic, cached data over live third-party routing
 APIs"). Exit 2 so the CLI blocks the call and the stderr message reaches the
 model.
@@ -76,7 +76,7 @@ def main(argv: list[str] | None = None) -> int:
         print(
             "BLOCKED: live third-party routing API detected ("
             + ", ".join(hits)
-            + "). " + MESSAGE + ": Slot-to-Stop routes on cached GTFS through "
+            + "). " + MESSAGE + ": CareLeap routes on cached GTFS through "
             "gtfs-mcp, never a live directions API (AGENTS.md).",
             file=sys.stderr,
         )

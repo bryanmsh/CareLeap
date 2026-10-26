@@ -1,6 +1,11 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import * as maplibregl from "maplibre-gl";
 import "maplibre-gl/dist/maplibre-gl.css";
+// MapLibre >= 5 runs its tile/GeoJSON processing in a module worker. Under Vite the
+// pre-bundled copy cannot locate that worker ("Worker failed to load"), so no points
+// ever render. Point it at the shipped worker file explicitly (Vite resolves ?url in
+// dev and emits the asset in the build).
+import maplibreWorkerUrl from "maplibre-gl/dist/maplibre-gl-worker.mjs?url";
 import type { Feature, FeatureCollection, Point } from "geojson";
 import { useTranslation } from "react-i18next";
 
@@ -21,6 +26,8 @@ import type { RuralResponse, RuralVerdict } from "../api/types";
  * No basemap tiles from a paid or keyed service (ui-style.md): a blank style and
  * only our own points.
  */
+maplibregl.setWorkerUrl(maplibreWorkerUrl);
+
 const GEOJSON_URL = `${import.meta.env.BASE_URL}data/origins.geojson`;
 
 type Lens = "reach" | "rural";
@@ -44,7 +51,6 @@ const BLANK_STYLE: maplibregl.StyleSpecification = {
       paint: { "background-color": "#e9edf1" },
     },
   ],
-  glyphs: undefined,
 };
 
 type CirclePaint = NonNullable<maplibregl.CircleLayerSpecification["paint"]>;
@@ -167,6 +173,7 @@ export function BlockGroupMap() {
         for (const [k, v] of Object.entries(paint)) {
           map.setPaintProperty("origins-circles", k as keyof CirclePaint, v);
         }
+        map.resize(); // the container may have been display:none while data loaded
       }
       return;
     }
@@ -255,15 +262,16 @@ export function BlockGroupMap() {
           </p>
         )}
 
-      {showMap && (
-        <div
-          className="map-wrap"
-          ref={ref}
-          role="group"
-          aria-label={t("map.title")}
-          data-ready={mapReady ? "true" : "false"}
-        />
-      )}
+      {/* Always mounted (hidden when there is nothing to draw) so the MapLibre
+          instance keeps its container across lens switches and data loads. */}
+      <div
+        className="map-wrap"
+        ref={ref}
+        role="group"
+        aria-label={t("map.title")}
+        data-ready={mapReady ? "true" : "false"}
+        style={{ display: showMap ? undefined : "none" }}
+      />
 
       {lens === "reach" && showMap && (
         <ol className="legend" aria-label={t("map.legendTitle")}>

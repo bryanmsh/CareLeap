@@ -1,4 +1,4 @@
-"""Slot-to-Stop feed watch (Kiro Crew heartbeat + expiry alarm). No LLM.
+"""CareLeap feed watch (Kiro Crew heartbeat + expiry alarm). No LLM.
 
 heartbeat(ctx): every 6h. HEAD the PVTA GTFS URL; if its ETag / Last-Modified /
                 Content-Length changed since the last run, notify with the diff
@@ -32,7 +32,7 @@ def _repo(ctx) -> Path:
 
 
 def _head(url: str) -> dict[str, str]:
-    req = urllib.request.Request(url, method="HEAD", headers={"User-Agent": "slot-to-stop-feedwatch"})
+    req = urllib.request.Request(url, method="HEAD", headers={"User-Agent": "careleap-feedwatch"})
     with urllib.request.urlopen(req, timeout=20) as r:  # noqa: S310 - fixed https URL
         h = r.headers
         return {k: h.get(k, "") for k in ("ETag", "Last-Modified", "Content-Length")}

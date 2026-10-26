@@ -1,6 +1,6 @@
 {
   "name": "feed-expiry-on-session-start",
-  "description": "Hook #1. When a Kiro IDE session starts, warn (never block) if the cached data is stale: data/raw/manifest.json missing or older than 7 days, or the PVTA GTFS service window ends within 14 days — so nobody plans a demo on an expired feed. Advisory only, always exits 0. UNVERIFIED TRIGGER: 'sessionStart' is NOT one of the two IDE trigger names confirmed in this repo (fileEdited, postTaskExecution) — see .kiro/hooks/README.md. The same check runs on the verified CLI trigger `agentSpawn` in .kiro/agents/slot-to-stop-dev.json, and in CI.",
+  "description": "Hook #1. When a Kiro IDE session starts, warn (never block) if the cached data is stale: data/raw/manifest.json missing or older than 7 days, or the PVTA GTFS service window ends within 14 days — so nobody plans a demo on an expired feed. Advisory only, always exits 0. UNVERIFIED TRIGGER: 'sessionStart' is NOT one of the two IDE trigger names confirmed in this repo (fileEdited, postTaskExecution) — see .kiro/hooks/README.md. The same check runs on the verified CLI trigger `agentSpawn` in .kiro/agents/careleap-dev.json, and in CI.",
   "trigger": "sessionStart",
   "matcher": "*",
   "action": "python scripts/hooks/check_data_fresh.py",

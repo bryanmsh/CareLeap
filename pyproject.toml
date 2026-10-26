@@ -5,9 +5,9 @@ requires = ["setuptools==84.2.1"]
 build-backend = "setuptools.build_meta"
 
 [project]
-name = "slot-to-stop"
+name = "careleap"
 version = "0.1.0"
-description = "Slot-to-Stop: Reachable Care"
+description = "CareLeap: Reachable Care"
 requires-python = ">=3.12"
 dependencies = [
     # api/ (M4)

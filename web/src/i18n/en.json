@@ -1,6 +1,6 @@
 {
   "app": {
-    "brand": "Slot-to-Stop",
+    "brand": "CareLeap",
     "skipToContent": "Skip to main content",
     "language": "Language",
     "nav": {
@@ -55,6 +55,12 @@
       "fri": "Fri",
       "sat": "Sat",
       "sun": "Sun"
+    },
+    "communities": {
+      "all": "All three counties",
+      "hampden": "Hampden County (Springfield, Holyoke)",
+      "hampshire": "Hampshire County (Northampton, Amherst)",
+      "franklin": "Franklin County (Greenfield, rural)"
     }
   },
   "suggest": {
@@ -188,7 +194,27 @@
         "none": "Needs a navigator"
       },
       "recommended": "Best choice",
-      "recurrence": "This visit repeats about {{count}} times a week. Plan the same trip each time."
+      "recurrence": "This visit repeats about {{count}} times a week. Plan the same trip each time.",
+      "showMore": "Show {{n}} more options",
+      "showLess": "Show fewer options",
+      "detail": {
+        "when": "When",
+        "rideMode": "Ride",
+        "rideModes": {
+          "volunteer_driver": "Volunteer driver / Council on Aging van (sourced window)",
+          "pt1_broker": "MassHealth PT-1 broker ride"
+        },
+        "bus": "Bus",
+        "busEstimate": "Bus estimate behind the ride",
+        "leave": "leave home {{time}}",
+        "atClinic": "at clinic {{time}}",
+        "back": "Back",
+        "lastBus": "last bus home {{time}}",
+        "total": "Total",
+        "totalValue": "{{buses}} buses, {{min}} min door to door",
+        "alsoOn": "Same trip also on",
+        "andMore": "+ {{n}} more weekdays"
+      }
     },
     "itinerary": {
       "title": "Your trip",
@@ -210,7 +236,22 @@
       "title": "Ride form (PT-1) — draft",
       "note": "This is a draft to help fill the form. It is not sent yet.",
       "toComplete": "for a person to complete",
-      "empty": "No ride form is needed for this plan."
+      "empty": "No ride form is needed for this plan.",
+      "fields": {
+        "member_name": "Member name",
+        "member_id": "MassHealth member ID",
+        "member_dob": "Date of birth",
+        "eligible_for_transportation": "Transportation benefit on file",
+        "pickup_address": "Pickup address",
+        "submitter_provider": "Submitting provider",
+        "treating_provider_same_as_submitter": "Treating provider same as submitter",
+        "treating_provider_npi": "Treating provider NPI",
+        "treating_provider_name": "Treating provider name",
+        "treatment_address": "Where the visit is",
+        "service_animal": "Service animal",
+        "transport_mode": "Kind of ride",
+        "effective_dates": "Ride date(s)"
+      }
     },
     "provenance": {
       "open": "How we know this",
@@ -229,11 +270,23 @@
         "pending": "Not yet checked"
       }
     },
-    "largeType": "Large text"
+    "largeType": "Large text",
+    "ride": {
+      "appointment": "Appointment: {{when}}",
+      "checkIn": "Check in by {{time}}",
+      "ends": "Visit ends about {{time}}",
+      "escort": "An adult must ride home with you after this visit.",
+      "pickup": "The ride service confirms your pickup times."
+    },
+    "prep": {
+      "reviewed": "Prep sheet ready: reviewed by a person in this language.",
+      "pending": "Prep sheet not attached yet: waiting for a person to review it in this language.",
+      "open": "Open the prep sheet"
+    }
   },
   "about": {
-    "title": "About Slot-to-Stop",
-    "body": "Slot-to-Stop shows how clinic appointment hours line up with bus service, so clinics can pick hours that more car-less patients can actually reach. Logistics only. Your care team decides your care.",
+    "title": "About CareLeap",
+    "body": "CareLeap shows how clinic appointment hours line up with bus service, so clinics can pick hours that more car-less patients can actually reach. Logistics only. Your care team decides your care.",
     "guardrail": "Every number carries a source and vintage. Patients shown are synthetic."
   }
 }

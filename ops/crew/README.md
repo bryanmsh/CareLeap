@@ -1,6 +1,6 @@
 # Kiro Crew jobs (feed watch)
 
-`slot_to_stop_feed.py` is a no-LLM Kiro Crew script cron. Install it by copying it to
+`careleap_feed.py` is a no-LLM Kiro Crew script cron. Install it by copying it to
 `~/.kiro/crew/crons/` and registering two jobs (done on M1's machine, 2026-10-24):
 
 | Job | Schedule | Function | What it does |

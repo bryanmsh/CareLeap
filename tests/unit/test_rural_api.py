@@ -78,7 +78,7 @@ def tiny_options(tiny_coverage) -> pd.DataFrame:
 
 @pytest.fixture
 def client(monkeypatch, tiny_cube, tiny_origins, tiny_towns, tiny_coverage, tiny_options) -> TestClient:
-    monkeypatch.setenv("SLOT_TO_STOP_DATA", "real")
+    monkeypatch.setenv("CARELEAP_DATA", "real")
     app = create_app()
     app.dependency_overrides[get_rural_data] = lambda: RuralSource(
         mode="real", cube=tiny_cube, origins=tiny_origins, towns=tiny_towns,
@@ -130,7 +130,7 @@ def test_unknown_town_is_404(client):
 
 
 def test_mock_mode_is_empty_and_labelled(monkeypatch):
-    monkeypatch.setenv("SLOT_TO_STOP_DATA", "mock")
+    monkeypatch.setenv("CARELEAP_DATA", "mock")
     from api.deps import _load_cube_origins
     _load_cube_origins.cache_clear()
     r = TestClient(create_app()).get("/rural")

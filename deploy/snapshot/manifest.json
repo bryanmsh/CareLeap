@@ -1,0 +1,119 @@
+{
+  "pvta_gtfs": {
+    "url": "https://www.pvta.com/g_trans/google_transit.zip",
+    "file": "data/raw/pvta_gtfs.zip",
+    "downloaded": "2026-10-24T18:53:02",
+    "bytes": 6457219,
+    "sha256": "08b62bbc7e9fd432a794ad6be5145f5f4c7706e91f1dbd9da5d05f861858a064",
+    "validation": {
+      "row_counts": {
+        "routes.txt": 63,
+        "stop_times.txt": 511287,
+        "stops.txt": 1980,
+        "trips.txt": 16831
+      },
+      "service_window": [
+        "20260917",
+        "20261219"
+      ]
+    }
+  },
+  "tiger_bg": {
+    "url": "https://www2.census.gov/geo/tiger/TIGER2024/BG/tl_2024_25_bg.zip",
+    "file": "data/raw/tiger_bg.zip",
+    "downloaded": "2026-10-24T18:53:02",
+    "bytes": 8770648,
+    "sha256": "1368dbe318c925d80f34e36262cd1e5f2dee91ebebcf3c63fc9288a2f8aab2f3",
+    "validation": {
+      "block_groups_MA": 5116
+    }
+  },
+  "portal_healthcare": {
+    "url": "https://hackachusetts2026.vercel.app/kits/tracks/healthcare.zip",
+    "file": "data/raw/portal_healthcare.zip",
+    "downloaded": "2026-10-24T18:53:02",
+    "bytes": 250574,
+    "sha256": "16347cdfce8d3754222d4eac597ad105738fc6737af35e24b151fe071841f9ed",
+    "validation": {
+      "folders": [
+        "cms-hospitals",
+        "ej",
+        "hospitals",
+        "openalex",
+        "places",
+        "places-sleep",
+        "pubmed",
+        "readmissions",
+        "trials"
+      ]
+    }
+  },
+  "ej_west": {
+    "url": "https://arcgisserver.digital.mass.gov/arcgisserver/rest/services/AGOL/EJ2020/MapServer/0/query?where=GEOID+LIKE+%2725013%25%27+OR+GEOID+LIKE+%2725015%25%27+OR+GEOID+LIKE+%2725011%25%27&outFields=GEOID%2CMUNICIPALITY%2CTOTAL_POP%2CPCT_MINORITY%2CTOTALHH%2CLIMENGHH%2CLIMENGHHPCT%2CBG_MHHI%2CEJ%2CEJ_CRIT_DESC&returnGeometry=false&f=json",
+    "file": "data/raw/ej_west.json",
+    "downloaded": "2026-10-24T18:53:02",
+    "bytes": 66053,
+    "sha256": "bd3542eff15fbef0adbe6a240d9e18986c09fcfa26ec4a4d093a4431e13a9d32",
+    "validation": {
+      "rows": 282,
+      "note": "Layer lists EJ block groups only; absent GEOID => not EJ"
+    }
+  },
+  "acs_bg": {
+    "url": "https://api.census.gov/data/2024/acs/acs5",
+    "file": "data/raw/acs_bg.csv",
+    "downloaded": "2026-10-24T18:53:02",
+    "bytes": 89226,
+    "sha256": "24a1785b424b21eed963cae2dd99888a2dfc7d45d4e9f6034eaf42a0238461c5",
+    "variables": [
+      "B25044_001E",
+      "B25044_003E",
+      "B25044_010E",
+      "B01003_001E",
+      "B01001_003E",
+      "B01001_004E",
+      "B01001_005E",
+      "B01001_006E",
+      "B01001_027E",
+      "B01001_028E",
+      "B01001_029E",
+      "B01001_030E",
+      "B01001_020E",
+      "B01001_021E",
+      "B01001_022E",
+      "B01001_023E",
+      "B01001_024E",
+      "B01001_025E",
+      "B01001_044E",
+      "B01001_045E",
+      "B01001_046E",
+      "B01001_047E",
+      "B01001_048E",
+      "B01001_049E",
+      "C16002_001E",
+      "C16002_004E",
+      "C16002_007E",
+      "C16002_010E",
+      "C16002_013E"
+    ],
+    "validation": {
+      "rows": 506,
+      "by_county": {
+        "013": 336,
+        "015": 108,
+        "011": 62
+      },
+      "vintage": "ACS 2024 5-year"
+    }
+  },
+  "tiger_cousub": {
+    "url": "https://www2.census.gov/geo/tiger/TIGER2024/COUSUB/tl_2024_25_cousub.zip",
+    "file": "data/raw/tiger_cousub.zip",
+    "downloaded": "2026-10-24T18:53:02",
+    "bytes": 1971813,
+    "sha256": "a6cab76ec9870292f29cc79ca25f000045f52716b66a66362c2f853b682f272f",
+    "validation": {
+      "county_subdivisions_MA": 357
+    }
+  }
+}

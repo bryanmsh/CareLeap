@@ -1,11 +1,14 @@
-"""Single FastAPI entry point for Slot-to-Stop.
+"""Single FastAPI entry point for CareLeap.
 
 Run from the repo root:  make api   (or: python -m uvicorn api.main:app --reload)
 """
 
 from __future__ import annotations
 
+import os
+
 from fastapi import FastAPI, Request
+from fastapi.middleware.cors import CORSMiddleware
 
 from api import __version__
 from api.deps import data_mode
@@ -16,13 +19,20 @@ from api.schemas import HealthResponse
 def create_app() -> FastAPI:
     mode = data_mode()
     app = FastAPI(
-        title="Slot-to-Stop: Reachable Care API",
+        title="CareLeap: Reachable Care API",
         version=__version__,
         description=(
             "Contracts: docs/contracts.md. Synthetic patients only; logistics only. "
             f"Data mode: {mode}."
         ),
     )
+
+    # The web app runs on another origin (Vite :5173 in dev, Netlify in prod). Allow only
+    # the origins we name; override with a comma-separated CARELEAP_WEB_ORIGINS.
+    origins = [o.strip() for o in os.environ.get(
+        "CARELEAP_WEB_ORIGINS", "http://127.0.0.1:5173,http://localhost:5173").split(",") if o.strip()]
+    app.add_middleware(CORSMiddleware, allow_origins=origins, allow_methods=["GET", "POST"],
+                       allow_headers=["Content-Type"])
 
     @app.middleware("http")
     async def tag_data_mode(request: Request, call_next):

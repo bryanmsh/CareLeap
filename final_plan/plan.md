@@ -1,6 +1,6 @@
-# plan.md: Slot-to-Stop: Reachable Care, build plan for a 4-person team
+# plan.md: CareLeap: Reachable Care, build plan for a 4-person team
 
-> Companion to `FINAL-slot-to-stop.md` (the *what* and *why*). This file is the *who does what, when*, including what to type into Kiro.
+> Companion to `FINAL-careleap.md` (the *what* and *why*). This file is the *who does what, when*, including what to type into Kiro.
 > **Assumed length: ~30 hours.** If your hackathon is shorter, keep the order and compress the hours. Cut lines are in §9.
 > **Backend first.** There's no dedicated frontend or video person yet. The UI starts at **H14** and is shared (§4, Phase B). The video starts at **H24**.
 
@@ -58,7 +58,7 @@ The script must:
 | 12 | **Barrier questions** | 6 questions based on the **CMS AHC HRSN** tool and **PRAPARE** (transport, work shift, childcare, escort, cost, language/worry) | `data/manual/barrier_questions.yaml` (EN + ES) |
 | 13 | **Visit rulebook** | Colonoscopy (sedated, escort, prep), prenatal, dialysis (3×/week, ~4h), chemo/infusion: duration, escort?, telehealth-OK?, prep sheet | `planner/visit_rules.yaml` |
 | 14 | **Patient templates EN/ES** | Itinerary + prep sheet at a grade-6 reading level, signed off by a human reviewer | `planner/templates/{en,es}/*.md` + `signoff.json` |
-| 15 | **Fact-check list** | Verify the "(verify)" stats in `FINAL-slot-to-stop.md`: FIT follow-up rate, escort rule, Baystate CHNA transport mention, dialysis shift fields | `docs/sources.md` |
+| 15 | **Fact-check list** | Verify the "(verify)" stats in `FINAL-careleap.md`: FIT follow-up rate, escort rule, Baystate CHNA transport mention, dialysis shift fields | `docs/sources.md` |
 | 16 | *(Stretch)* **FRTA mini-GTFS** | Hand-encode 1–2 FRTA routes from their PDF timetables | `data/manual/frta_minigtfs/` |
 
 ---
@@ -91,7 +91,7 @@ Legend: **K:** = what to do *in Kiro*.
 ### H0–0.5 · Kickoff (everyone together)
 | Who | Tasks |
 |---|---|
-| **All** | Read `FINAL-slot-to-stop.md` §0 and §15. Agree on the demo path: **Baystate GI × Holyoke × Maria**. Confirm the roles. |
+| **All** | Read `FINAL-careleap.md` §0 and §15. Agree on the demo path: **Baystate GI × Holyoke × Maria**. Confirm the roles. |
 | **M1** | Create the GitHub repo + folder skeleton (final doc §7.1). Protect `main`. Invite everyone. |
 | **M2** | Get a Census API key. Start the big downloads first: PVTA zip, TIGER, Geofabrik. |
 | **M3** | Open a shared sheet for clinic hours and the rural table. Start Baystate GI + OB hours. |
@@ -163,7 +163,7 @@ From here **M4 leads the UI**, with **M3** helping. **Kiro Web Autonomous** buil
 ### H14–18 · UI v1 + hooks + power + Crew
 | Who | Tasks |
 |---|---|
-| **M1** | Finish the **remaining hooks** (final doc §8.5): **#1** Session Start (feed freshness), **#2** Prompt Submit (template rule), **#3** Pre Tool Use (block unsigned template writes), **#4** Pre Tool Use (block live routing APIs), **#7** File Save `web/**` → axe-core a11y check, **#8** File Create (validate new GTFS zips), **#9** Pre Task (`make data`), **#10** Post Task (update `docs/traceability.md`).<br>**K: build the `slot-to-stop` power**: `plugin.json`, `mcp.json` (`gtfs-mcp` + `reach-mcp`), skills `clinic-access-audit` + `gtfs-debugging`. Test-install it in a fresh workspace.<br>**Crew:** `kirocrew setup` → configure MCP + steering explicitly → a heartbeat every 6h (PVTA ETag → validate → re-audit → Slack diff via the Gateway), plus a service-end alarm 14 days before feed expiry → `kirocrew doctor`. |
+| **M1** | Finish the **remaining hooks** (final doc §8.5): **#1** Session Start (feed freshness), **#2** Prompt Submit (template rule), **#3** Pre Tool Use (block unsigned template writes), **#4** Pre Tool Use (block live routing APIs), **#7** File Save `web/**` → axe-core a11y check, **#8** File Create (validate new GTFS zips), **#9** Pre Task (`make data`), **#10** Post Task (update `docs/traceability.md`).<br>**K: build the `careleap` power**: `plugin.json`, `mcp.json` (`gtfs-mcp` + `reach-mcp`), skills `clinic-access-audit` + `gtfs-debugging`. Test-install it in a fresh workspace.<br>**Crew:** `kirocrew setup` → configure MCP + steering explicitly → a heartbeat every 6h (PVTA ETag → validate → re-audit → Slack diff via the Gateway), plus a service-end alarm 14 days before feed expiry → `kirocrew doctor`. |
 | **M2** | `suggest_schedule` returns the top 3 changes with impact. A `/report` endpoint for the CHNA PDF numbers. |
 | **M3** | Open GitHub issues for **Kiro Web Autonomous**: ① CHNA PDF report module, ② i18n wiring EN/ES, ③ phone-mock itinerary component. Review the PRs it opens (never auto-merge). Write the printable **QR itinerary card** content. |
 | **M4** | **K: Quick Spec `ui-week-grid`** → the **Audit screen**: block-group map + week grid (7 days × 12 hours) coloured by reachable share, plus the **day ribbon** on hover (D3: outbound → appointment → return → last bus home). |
@@ -246,7 +246,7 @@ Everyone watches the final video. One person clones fresh and runs the app. Go t
 | `specs/reachability-cube, schedule-optimizer` | M2 |
 | `specs/visit-planner, ui-week-grid, ui-planner` | M4 |
 | `specs/audit-report-pdf` (via Kiro Web) | M3 |
-| `hooks/*`, `agents/*`, `settings/mcp.json`, `power/slot-to-stop/` | M1 |
+| `hooks/*`, `agents/*`, `settings/mcp.json`, `power/careleap/` | M1 |
 
 ---
 

@@ -69,14 +69,19 @@ def get_suggest(
     source: Annotated[AuditSource, Depends(get_audit_data)],
     k: Annotated[int, Query(ge=1, le=10)] = 3,
     blocks: Annotated[str | None, Query(max_length=100)] = None,
+    community: Annotated[str, Query(min_length=1, max_length=64)] = "all",
 ) -> SuggestResponse:
     if source.mode == "mock":
         raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE,
-                            detail="Schedule suggestions need the real cube (SLOT_TO_STOP_DATA=real).")
+                            detail="Schedule suggestions need the real cube (CARELEAP_DATA=real).")
     from engine.optimizer import suggest_schedule
 
+    from engine.audit import filter_community
+
     try:
-        payload = suggest_schedule(source.cube, source.origins, clinic, day, k=k,
+        # Optimize for the community on screen (default: the whole service area).
+        origins = filter_community(source.origins, community)
+        payload = suggest_schedule(source.cube, origins, clinic, day, k=k,
                                    baseline_blocks=_parse_blocks(blocks))
     except AuditDataError as exc:
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=str(exc)) from exc

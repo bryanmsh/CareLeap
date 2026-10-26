@@ -59,6 +59,8 @@ export interface WhatIfRequest {
     /** new start hour, 24h local */
     to: number;
   };
+  /** same scope as the audit on screen; omitted = all */
+  community?: string;
 }
 
 /** GET /clinics — the clinics the audit covers. */

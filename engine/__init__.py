@@ -1,4 +1,4 @@
-"""Slot-to-Stop routing engine.
+"""CareLeap routing engine.
 
 Public surface used across the team (see docs/contracts.md §2):
     - types:  Leg, RoundTripResult, OriginRef, ClinicRef, Limits

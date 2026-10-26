@@ -5,7 +5,7 @@ inclusion: always
 # Structure — repo layout and module boundaries
 
 ```
-slot-to-stop/
+careleap/
 ├── .kiro/          steering, specs, hooks, agents, skills, settings/mcp.json (COMMITTED)
 ├── AGENTS.md       always-on agent rules
 ├── engine/         GTFS ingest, RAPTOR/rRAPTOR, CSA, brute force, reachability cube, optimizer
@@ -13,7 +13,7 @@ slot-to-stop/
 ├── api/            FastAPI (routers: audit, whatif, plan, provenance)
 ├── web/            React app (routes /audit, /planner, /about)
 ├── mcp/            gtfs-mcp, reach-mcp, access-resources-mcp
-├── power/slot-to-stop/   publishable Kiro power
+├── power/careleap/   publishable Kiro power
 ├── pipeline/       build_origins.py, stops_walk.py
 ├── scripts/        get_data.py
 ├── data/           raw/ + cache/ (git-ignored) + fixtures/ + manual/ (committed)

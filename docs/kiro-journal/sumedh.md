@@ -94,3 +94,25 @@ outcome: both servers list tools; validate_feed ok on PVTA; reachability returns
 ## 2026-10-24 19:10 · sumedh · Crew · topic: other
 what: README Kiro Scorecard refreshed: oracle bug (bug-csa-transfer-cap) under differential testing, 11/11 hooks, 4-clinic cube, /rural contract, current counts (490 fast + 2 slow pytest, 20 vitest, 2 e2e, 2 axe, fresh-clone make data 5 min); mcp/README stale placeholder note fixed
 outcome: write-up text only; no code changed
+
+## 2026-10-24 19:43 · sumedh · Crew · topic: pbt
+what: Demo bring-up found the planner always answered 'none' for Maria on real data: (1) colonoscopy slots only existed for BAY_GI_GREENFIELD, which has no stop anchor; (2) the UI's synthetic origin was not a real block group; (3) engine.round_trip returned the EARLIEST outbound (06:xx for a 16:30 visit), so the door-to-door window overlapped every shift
+kiro: fixed in order: 66 labelled template slots for BAY_GI_SPRINGFIELD (demo anchor), Maria -> Holyoke bg 250138121032 (real + mocks), round_trip now returns the latest-departing outbound via the reverse profile; new property test_latest_outbound.py
+outcome: Maria: escort-aware ride at 16:30 + ES prep sheet + PT-1 prefill on real PVTA data; fast suite + 11 e2e + axe green
+
+## 2026-10-24 19:43 · sumedh · Crew · topic: other
+what: Demo plumbing: CORS middleware (origins from SLOT_TO_STOP_WEB_ORIGINS), planner slot window [today, +14d] frozen by SLOT_TO_STOP_TODAY in make demo, PlanView shows top 3 options + show-more; merged #14 after fixing a count() race in Kevin's planner e2e
+outcome: localhost demo: API :8000 real mode on the frozen snapshot, web :5173 via /api proxy
+
+## 2026-10-24 20:30 · sumedh · Crew · topic: other
+what: Demo polish: map was blank (glyphs: undefined rejected by MapLibre; worker URL under Vite; container unmounted on lens switch) - fixed all three; RT-8 provenance record added; planner options now carry per-option transit details (leave/arrive, routes, return, last bus, buses, door-to-door) and Holyoke OB/GYN template slots so prenatal shows 'Take the bus' options
+outcome: headless screenshots: both map lenses draw; prenatal 12 distinct slot options with bus lines; Maria 12 rides with bus estimate; tsc, 20 vitest, 9 e2e, 2 axe green
+
+## 2026-10-24 20:43 · sumedh · Crew · topic: other
+what: Planner output fixes from demo review: identical weekday options collapsed into one choice with also_on dates (12 -> distinct trips); prep option now attaches the signed-off EN/ES prep sheet (signoff.json) with known tokens filled and the rest left blank; ride itinerary/phone view show appointment, check-in, visit end, escort rule; PT-1 shows field labels and the clinic name+address
+outcome: Maria: 12 options -> 7 distinct, prep sheet attached (ES, reviewed); fast pytest, 20 vitest, 10 e2e+axe green
+
+## 2026-10-24 20:50 · sumedh · Crew · topic: other
+what: Renamed the product Slot-to-Stop -> CareLeap everywhere: UI title/strings, API title, docs, steering, specs, power (power/careleap), agent careleap-dev, env vars SLOT_TO_STOP_* -> CARELEAP_*, Python package careleap, crew script careleap_feed.py, FINAL-careleap.md
+kiro: past journal entries left untouched (append-only rule); external power repo URL kept (GitHub rename is a manual step)
+outcome: 534 pytest, 20 vitest, 10 e2e+axe green; API + web restarted under CARELEAP_* env

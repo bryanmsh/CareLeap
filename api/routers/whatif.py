@@ -40,7 +40,7 @@ def post_whatif(
         raise HTTPException(status.HTTP_404_NOT_FOUND, detail=f"unknown clinic {request.clinic!r}")
     try:
         data = engine_whatif(source.cube, source.origins, request.clinic,
-                             request.shift.block, request.shift.to)
+                             request.shift.block, request.shift.to, community=request.community)
     except AuditDataError as exc:
         # clinic exists but the block/hour is outside its schedule: unprocessable.
         raise HTTPException(422, detail=str(exc)) from exc

@@ -29,22 +29,24 @@ from engine.audit import AuditDataError, audit as engine_audit
 router = APIRouter(tags=["report"])
 
 GROUP_LABELS = {
-    "ej": "Environmental-justice block groups",
+    "ej": "Environmental-justice neighborhoods (Census block groups)",
     "lep": "Limited-English households",
     "age65": "Adults 65+",
-    "zero_veh": "All car-less adults",
+    "zero_veh": "All adults with no car in the household",
 }
 DAY_NAMES = {"mon": "Monday", "tue": "Tuesday", "wed": "Wednesday", "thu": "Thursday",
              "fri": "Friday", "sat": "Saturday", "sun": "Sunday"}
 
 METHOD = (
-    "Each cell is the share of car-less adults (ACS 2024 5-year estimate) in the community "
-    "who can reach the clinic by scheduled bus, arrive before the appointment, and get home "
-    "the same day (engine.round_trip, PVTA + FRTA GTFS). Shares are weighted by people, not "
-    "block groups. Equity intervals are 90% confidence intervals carried from the published "
-    "ACS margins of error (Census ACS General Handbook, ch. 8). Reachability is not "
-    "attendance: this measures whether the trip is possible, not whether a visit happens."
+    "Each cell is the share of adults with no car in the household (\"car-less adults\", an "
+    "ACS 2024 5-year estimate) in the community who can reach the clinic by scheduled bus, "
+    "arrive before the appointment, and get home the same day (engine.round_trip, PVTA + FRTA "
+    "GTFS). Shares are weighted by people, not block groups. The 90% range on each equity "
+    "group is a confidence interval carried from the published ACS margins of error (Census "
+    "ACS General Handbook, ch. 8). Reachability is not attendance: this measures whether the "
+    "trip is possible, not whether a visit happens."
 )
+RANGE_NOTE = "Wide ranges mean small samples: read them as uncertain, not as findings."
 FOOTER = "Logistics only. Your care team decides your care. Synthetic patients only; no PHI."
 
 CSS = """
@@ -100,16 +102,17 @@ def clinic_section(clinic_id: str, clinic_name: str, community: str, day: str,
         "<h2>Who can get there and back by bus, by appointment hour</h2>"
         "<table><thead><tr><th>Hour</th><th>Reachable share</th><th>Car-less adults reached</th>"
         f"<th>Car-less adults</th></tr></thead><tbody>{rows}</tbody></table>"
-        "<h2>Equity view (whole day, averaged over the clinic's hours)</h2>"
-        "<table><thead><tr><th>Group</th><th>Reachable share</th><th>90% interval</th>"
+        "<h2>Equity view (whole day, averaged across the appointment hours above)</h2>"
+        "<table><thead><tr><th>Group</th><th>Reachable share</th><th>90% range (margin of error)</th>"
         f"<th>People (n)</th></tr></thead><tbody>{''.join(eq_rows)}</tbody></table>"
+        f'<p class="method">{_e(RANGE_NOTE)}</p>'
         f'<h2>Method</h2><p class="method">{_e(METHOD)}</p>'
         f'<h2>Sources</h2><ul class="sources">{sources}</ul>'
         f'<p class="footer">{_e(FOOTER)}</p></section>'
     )
 
 
-def report_html(sections: Sequence[str], title: str = "Slot-to-Stop clinic audit") -> str:
+def report_html(sections: Sequence[str], title: str = "CareLeap clinic audit") -> str:
     return (f"<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><title>{_e(title)}</title>"
             f"<style>{CSS}</style></head><body>{''.join(sections)}</body></html>")
 
@@ -160,4 +163,4 @@ def get_report(
         raise HTTPException(status.HTTP_503_SERVICE_UNAVAILABLE,
                             detail=f"{exc}; use format=html, or install the GTK runtime") from exc
     return Response(content=pdf, media_type="application/pdf",
-                    headers={"Content-Disposition": 'inline; filename="slot-to-stop-audit.pdf"'})
+                    headers={"Content-Disposition": 'inline; filename="careleap-audit.pdf"'})

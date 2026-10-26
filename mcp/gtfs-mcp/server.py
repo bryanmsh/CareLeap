@@ -1,4 +1,4 @@
-"""gtfs-mcp — stdio MCP server wrapping the Slot-to-Stop routing engine.
+"""gtfs-mcp — stdio MCP server wrapping the CareLeap routing engine.
 
 Owner: M1. Exposes the engine's authoritative round-trip router so agents route
 against a cached GTFS feed instead of live third-party routing APIs (see

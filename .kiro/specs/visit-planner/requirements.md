@@ -58,7 +58,7 @@ Each requirement has a stable id (`VP-n`) referenced by `/provenance` and tests.
 - **VP-16 (logistics only).** THE planner SHALL NOT emit clinical advice or eligibility
   wording; output failing the check SHALL be withheld (HTTP 500), never sent.
 - **VP-17 (synthetic only).** THE planner SHALL be exercised only with synthetic patients.
-- **VP-18 (no silent mocks).** WHEN real data is selected (`SLOT_TO_STOP_DATA=real`) and a
+- **VP-18 (no silent mocks).** WHEN real data is selected (`CARELEAP_DATA=real`) and a
   source has not landed, THE API SHALL respond 503 rather than fall back to mock data.
 - **VP-19 (purity).** THE solver SHALL NOT import FastAPI, Pydantic or `api/`, and SHALL
   make no I/O; the transit check is injected.

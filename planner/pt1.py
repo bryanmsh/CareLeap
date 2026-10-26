@@ -85,7 +85,7 @@ _REAL_FIELD_SOURCES: dict[str, str | None] = {
     "treating_provider_same_as_submitter": None,
     "treating_provider_npi": None,
     "treating_provider_name": None,
-    "treatment_address": "visit.clinic_id",  # clinic id stands in for destination
+    "treatment_address": "visit.clinic_address",  # name + street from clinics.csv
     "service_animal": None,
     "transport_mode": None,         # depends on escort/medical necessity; person decides
     "effective_dates": "visit.date",
@@ -131,12 +131,18 @@ def prefill(
     rule: VisitRule,
     slot: CandidateSlot,
     language: str,
+    clinic: Mapping[str, str] | None = None,
 ) -> dict[str, Any]:
     values: dict[str, Any] = {
         "patient.id": patient.id,
         "patient.language": language,
         "visit.type": rule.visit_type,
         "visit.clinic_id": slot.clinic_id,
+        # the clinic's name and street when known, else its id (never a guessed address)
+        "visit.clinic_address": (
+            ", ".join(x for x in (clinic.get("name"), clinic.get("address"), clinic.get("town")) if x)
+            if clinic else slot.clinic_id
+        ),
         "visit.date": slot.date,
         "visit.start_time": _hhmm(slot.start),
         "visit.escort_required": rule.escort_required,

@@ -119,6 +119,9 @@ class WhatIfShift(_Strict):
 class WhatIfRequest(_Strict):
     clinic: str = Field(min_length=1, max_length=64)
     shift: WhatIfShift
+    # Same scope as the /audit the user is looking at, so before/after compare like
+    # with like. Optional and additive: omitted = the whole service area.
+    community: str = Field(default="all", min_length=1, max_length=64)
 
 
 # --------------------------------------------------------------------------- #

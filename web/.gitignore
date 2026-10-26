@@ -5,5 +5,7 @@ playwright-report/
 *.tsbuildinfo
 
 # Generated map data (web/scripts/export_origins.py from the gitignored parquet).
-public/data/
+public/data/*
+# ...except the block-group points the deployed map needs (derived, public ACS/TIGER).
+!public/data/origins.geojson
 openapi.json
