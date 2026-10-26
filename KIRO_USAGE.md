@@ -1,6 +1,6 @@
-# How we used Kiro — Slot-to-Stop: Reachable Care
+# How we used Kiro — CareLeap: Reachable Care
 
-Slot-to-Stop tells western-Massachusetts health systems which appointment hours their
+CareLeap tells western-Massachusetts health systems which appointment hours their
 car-less patients can actually reach **and get home from** by bus, and plans the
 high-stakes visits (colonoscopy, prenatal, dialysis, chemo) so they can happen. A wrong
 routing answer strands a patient, so we treated Kiro as a way to build a
@@ -187,10 +187,11 @@ caches present), plus 20 vitest, 2 Playwright e2e and 2 axe runs.
 
 ## 7. Kiro powers
 
-We **built and published our own power**: `power/slot-to-stop/` (`plugin.json`, an
-`mcp.json` that launches `gtfs-mcp` + `reach-mcp` via `SLOT_TO_STOP_HOME`, and two skills:
+We **built and published our own power**: `power/careleap/` (`plugin.json`, an
+`mcp.json` that launches `gtfs-mcp` + `reach-mcp` via `CARELEAP_HOME`, and two skills:
 `clinic-access-audit` and `gtfs-debugging`). It is public at
-[github.com/SSJ-07/slot-to-stop-power](https://github.com/SSJ-07/slot-to-stop-power) (v0.1.0).
+[github.com/SSJ-07/slot-to-stop-power](https://github.com/SSJ-07/slot-to-stop-power) (v0.1.0,
+published under the project's old name).
 
 We test-installed it into a **fresh, empty workspace** and drove it over MCP stdio
 (`initialize`, `tools/list`, a real `round_trip` call). That found a real bug: the tool was
