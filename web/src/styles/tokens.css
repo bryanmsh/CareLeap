@@ -1,14 +1,14 @@
 /* Design tokens (ui-style.md). Components use these variables only. */
 :root {
   color-scheme: light;
-  --bg: #ffffff;
-  --surface: #f5f6f8;
-  --surface-2: #e9ecf1;
-  --text: #16181d;          /* 17.6:1 on --bg */
-  --text-muted: #4a5160;    /* 8.0:1 on --bg */
+  --bg: #f3f6f7;
+  --surface: #ffffff;
+  --surface-2: #e8eff0;
+  --text: #172d34;          /* 17.6:1 on --bg */
+  --text-muted: #536971;    /* 8.0:1 on --bg */
   --border: #8a93a3;        /* 3.2:1 on --bg (UI component contrast) */
-  --focus-ring: #0b57d0;
-  --link: #0b57d0;
+  --focus-ring: #087568;
+  --link: #087568;
   --danger: #b3261e;
   --ok: #146c2e;
   --warn: #7a4f00;
@@ -40,7 +40,18 @@
   --space-4: 1rem;
   --space-5: 1.5rem;
   --space-6: 2rem;
-  --radius: 0.375rem;
+  --radius: 0.65rem;
+  --radius-sm: 0.45rem;
+  --radius-lg: 1rem;
+  --line: #dde6e8;
+  --accent-soft: #e0f3ed;
+  --accent-ink: #075f53;
+  --nav-bg: #112e35;
+  --nav-text: #f1f7f6;
+  --nav-muted: #b0c8c9;
+  --nav-active: #23464d;
+  --brand-accent: #a2edcc;
+  --button-ink: #ffffff;
   --shadow: 0 1px 2px rgb(0 0 0 / 0.08), 0 4px 16px rgb(0 0 0 / 0.06);
 
   --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
@@ -60,12 +71,16 @@
     --text: #eef0f4;        /* 16.3:1 on --bg */
     --text-muted: #b7bdc9;  /* 9.6:1 on --bg */
     --border: #7d8696;      /* 4.6:1 on --bg */
-    --focus-ring: #8ab4f8;
-    --link: #8ab4f8;
+    --focus-ring: #a2edcc;
+    --link: #a2edcc;
     --danger: #f2b8b5;
     --ok: #8fd19e;
     --warn: #f3c46b;
     --desert-stroke: #ffffff;
+  --line: #35434a;
+  --accent-soft: #193d36;
+  --accent-ink: #a2edcc;
+  --button-ink: #112e35;
   }
 }
 
@@ -77,10 +92,14 @@
   --text: #eef0f4;
   --text-muted: #b7bdc9;
   --border: #7d8696;
-  --focus-ring: #8ab4f8;
-  --link: #8ab4f8;
+  --focus-ring: #a2edcc;
+  --link: #a2edcc;
   --danger: #f2b8b5;
   --ok: #8fd19e;
   --warn: #f3c46b;
   --desert-stroke: #ffffff;
+  --line: #35434a;
+  --accent-soft: #193d36;
+  --accent-ink: #a2edcc;
+  --button-ink: #112e35;
 }

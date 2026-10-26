@@ -108,7 +108,7 @@ export function WeekGrid({
 
   return (
     <table className="weekgrid" aria-busy={busy}>
-      <caption>{t("audit.gridCaption")}</caption>
+      <caption className="visually-hidden">{t("audit.gridCaption")}</caption>
       <thead>
         <tr>
           <th scope="col">{t("audit.hour")}</th>
